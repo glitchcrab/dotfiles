@@ -1,0 +1,10 @@
+[Unit]
+Description=set wallpaper on login
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/home/shw/.local/bin/set-wallpaper.sh
+Type=oneshot
+
+[Install]
+WantedBy=default.target

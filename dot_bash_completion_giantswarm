@@ -1,0 +1,4 @@
+# enable tab completion for opsctl
+if which opsctl 1>/dev/null 2>&1 ; then
+  source <(opsctl completion bash)
+fi

@@ -1,0 +1,11 @@
+[Unit]
+Description=Rotates wallpaper every 15 minutes
+
+[Timer]
+OnCalendar=*:0/15
+#OnCalendar=*-*-* 11:30:00
+Persistent=True
+Unit=wallpaper-rotater.service
+
+[Install]
+WantedBy=timers.target

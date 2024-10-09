@@ -1,0 +1,26 @@
+version: 2
+
+locations:
+  home:
+    from: /home/shw
+    to: minio-austin
+    options:
+      backup:
+        exclude:
+          - '*code'
+          - '*Desktop'
+          - '*Documents'
+          - '*Downloads'
+          - '*lost+found'
+          - '*mount'
+          - '*nfs'
+          - '*tmp'
+          - '*temp'
+
+backends:
+  minio-austin:
+    type: s3
+    path: http://localhost:9000/bucket_name
+    env:
+      AWS_ACCESS_KEY_ID: my_key
+      AWS_SECRET_ACCESS_KEY: my_secret

@@ -1,0 +1,12 @@
+[Unit]
+Description=udiskie systray icon
+After=display-manager.service
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/udiskie --tray
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

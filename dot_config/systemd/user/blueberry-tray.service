@@ -1,0 +1,13 @@
+[Unit]
+Description=blueberry systray icon
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+ExecStart=/usr/bin/blueberry-tray
+Restart=on-failure
+RestartSec=5s
+Type=forking
+
+[Install]
+WantedBy=default.target

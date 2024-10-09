@@ -1,0 +1,60 @@
+# custom aliases
+alias grep='grep --color=auto'
+alias rm='rm -I --preserve-root'
+alias xclip='xclip -sel clip'
+alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+alias ranpass='password_generator'
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias root-snapshot='btrfs_root_snapshot'
+alias system-upgrade='system_upgrade'
+alias p9="ping 9.9.9.9"
+alias debug-yamls='deploy_debug_yamls'
+alias debug-yamls-cleanup='delete_debug_yamls'
+alias vssh='vault_ssh'
+alias gitbranchclean='git_branch_clean'
+alias gti='git'
+alias cdgb='cd $(git rev-parse --show-toplevel)'
+alias cdp='cd ~/code/personal'
+alias cdgb='cd $(git rev-parse --show-toplevel)'
+alias ansible-venv='source ~/code/venvs/ansible/bin/activate'
+# rescan yubikeys for GPG keys
+alias scan-yubikey='gpg-connect-agent "scd serialno" "learn --force" /bye'
+
+# allow watch to be chained with further aliases
+alias watch='watch '
+
+# replace some tools with newer equivalents
+alias cat='bat -pP'
+
+# kubectl
+alias k='kubectl'
+alias kex='kubectl explain'
+alias kg='kubectl get'
+alias kgpono='kubectl_get_po_on_no'
+alias kgl='kubectl get --show-labels'
+alias kgy='kubectl get -o yaml'
+alias ykg='kubectl get -o yaml'
+alias kgj='kubectl get -o json'
+alias jkg='kubectl get -o json'
+alias ked='kubectl edit'
+alias kdel='kubectl delete'
+alias kdes='kubectl describe'
+alias ka='kubectl apply'
+alias kexec='kubectl exec -it'
+alias kgev="kubectl get events --sort-by='.metadata.creationTimestamp'"
+alias kl='kubectl logs'
+alias klf='kubectl logs -f'
+alias kexport='kubectl_export'
+alias kgall='kubectl_get_all'
+alias kpf='kubectl port-forward'
+alias kc='kubectl config current-context'
+alias kns='kubens'
+
+# execute switch function provided by kubeswitch
+alias s='switch'
+alias kubectx='switch'
+
+# alacritty theme switch
+alias alacritty-theme='alacritty_theme_switch'
+
+alias get-weather='curl wttr.in/lgw'

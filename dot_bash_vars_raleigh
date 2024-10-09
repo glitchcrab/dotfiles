@@ -1,0 +1,1 @@
+export ROOTFS=/dev/mapper/arch-rootfs

@@ -1,0 +1,10 @@
+[Unit]
+Description=networkmanager systray icon
+
+[Service]
+ExecStart=/usr/bin/nm-applet
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

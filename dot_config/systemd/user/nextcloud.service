@@ -1,0 +1,15 @@
+[Unit]
+Description=nextcloud client
+After=network-online.target display-manager.service
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/nextcloud --background
+LimitNOFILE=65535:65535
+Restart=on-failure
+RestartSec=5s
+Type=simple
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,32 @@
+/*
+
+POLYBAR: ROFI POWERMENU INFO DIALOG
+
+*/
+
+* {
+    al:               #00000000;
+    bg:               #1F1F1FFF;
+    bga:              #039BE533;
+    bar:              #1F1F1FFF;
+    fg:               #FFFFFFFF;
+    ac:               #039BE5FF;
+    background-color: @bg;
+    text-color:       @fg;
+    font:             "SFNS Display 8";
+}
+
+window {
+    width:            320px;
+    padding:          25px;
+    border:           1px;
+    border-radius:    0px;
+    border-color:     @ac;
+    location:         center;
+    y-offset:         -2em;
+}
+
+entry {
+    expand:           true;
+    text-color:       @ac;
+}

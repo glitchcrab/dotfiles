@@ -1,0 +1,68 @@
+[user]
+    email = glitchcrab-github@simonweald.com
+    name = Simon Weald
+    signingkey = FEAD0B2AFDD98808
+[commit]
+    gpgsign = false
+[push]
+    default = simple
+[http "https://gopkg.in"]
+    followRedirects = true
+[help]
+    autocorrect = 1
+[alias]
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    unstage = reset --
+    p = remote prune origin
+    undo = reset --mixed
+    clean-branches = !git branch | xargs git branch -D
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+    tool = meld
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[core]
+    excludesfile = /home/shw/.gitignore_user
+    hooksPath = /home/shw/.git-hooks
+[pull]
+    rebase = false
+[hooks]
+    gitleaks = false
+[init]
+    defaultBranch = main
+
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[delta]
+    features = decorations
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !/usr/bin/gh auth git-credential
+
+[includeIf "gitdir:~/code/giantswarm/repos/"]
+    path = ~/.gitconfig-work

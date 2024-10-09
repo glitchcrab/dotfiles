@@ -1,0 +1,176 @@
+function password_generator() {
+    if [ "$1" == "-h" ]; then
+        echo "Syntax: 'ranpass [N]' where N is the (optional) password length required"
+    elif [ -n "$1" ]; then
+        pwgen -y $1 10
+    else
+        pwgen 16 10
+    fi
+}
+
+function btrfs_root_snapshot() {
+    TODAY=`date -I`
+    NOW=`date +"%Y-%m-%d_%H-%S"`
+
+    echo "mounting rootfs.."
+    sudo mount $ROOTFS /mnt
+    sleep 2
+    if [ -d /mnt/__snapshot/rootfs-$NOW ]; then
+        echo "[FAILED]: Snapshot already exists"
+        exit
+    fi
+
+    sudo btrfs subvol snapshot /mnt/__active/rootfs /mnt/__snapshot/rootfs-$NOW
+    echo "[OK]: snapshot taken for $NOW"
+    sleep 2
+    sudo umount /mnt
+    echo "[OK]: $ROOTFS unmounted"
+}
+
+function system_upgrade() {
+    btrfs_root_snapshot
+    paru -Syu
+}
+
+# renders markdown file using github's API.
+# `mdsee something.md`
+mdsee(){
+    HTMLFILE="$(mktemp -u).html"
+    cat "$1" | \
+      jq --slurp --raw-input '{"text": "\(.)", "mode": "markdown"}' | \
+      curl -s --data @- https://api.github.com/markdown > "$HTMLFILE"
+    echo $HTMLFILE
+    firefox "$HTMLFILE"
+}
+
+deploy_debug_yamls() {
+    if [[ -z "${1}" ]] ; then
+        echo "specify user to run as: root/notroot"
+        return
+    fi
+
+    kubectl create -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/service-account.yaml
+    kubectl create -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/rbac.yaml
+    kubectl create -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/pod-security-policy.yaml
+    kubectl create -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/network-policy.yaml
+
+    if [[ "${1}" == "notroot" ]]; then
+        kubectl create -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/deployment-not-root.yaml
+    else
+        kubectl create -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/deployment-root.yaml
+    fi
+}
+
+delete_debug_yamls() {
+    kubectl delete deploy debug
+    kubectl delete -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/network-policy.yaml
+    kubectl delete -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/pod-security-policy.yaml
+    kubectl delete -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/rbac.yaml
+    kubectl delete -f https://raw.githubusercontent.com/glitchcrab/k8s-dbg-ymls/master/service-account.yaml
+}
+
+kubectl_export() {
+  kubectl get "$@" -o json \
+    | jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.managedFields,.status,.metadata.creationTimestamp,.metadata.generation,.metadata.selfLink)' \
+    | yq -y .
+}
+
+kubectl_get_all() {
+    if [[ -z "${1}" ]] ; then
+        echo -e "  USAGE: provide namespace to query for resources and optional label pair to filter:\n\n  $ kgall default -l app=name"
+        return
+    fi
+
+    if [[ "${2}" == "-l" ]]; then
+        echo "Getting resources in namespace ${1} with label ${3}"
+        kubectl api-resources --verbs=list --namespaced -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found -n ${1} -l ${3}
+    else
+        echo "Getting all resources in namespace ${1}"
+        kubectl api-resources --verbs=list --namespaced -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found -n ${1}
+    fi
+}
+
+kubectl_get_po_on_no() {
+    kubectl get po -A --field-selector=spec.nodeName=${1}
+}
+
+vault_sign_key () {
+  VAULT_PUBLIC_SSH_KEY=~/.ssh/id_ed25519_vault_shw.pub
+  VAULT_SIGNED_KEY=$(echo ".ssh/id_ed25519_${SSH_USER}.signed.pub")
+  VAULT_GITHUB_TOKEN_PATH=~/.vault_github_token
+
+  if [[ ! -f "${VAULT_GITHUB_TOKEN_PATH}" ]]; then
+    echo "[ERR] No GitHub access token found at ${VAULT_GITHUB_TOKEN_PATH}"
+    return
+  fi
+
+  source "${VAULT_GITHUB_TOKEN_PATH}"
+  export TMP_DIR=$(mktemp -d)
+
+  VAULT_PAYLOAD="{\"token\":\"${VAULT_GITHUB_TOKEN}\"}"
+  VAULT_TOKEN=$(curl -s -X POST -d ${VAULT_PAYLOAD} ${VAULT_ADDR}/v1/auth/github/login | jq -r .auth.client_token)
+
+  if ! grep -q "s." <<< $VAULT_TOKEN ; then
+    echo "[ERR] Vault token not retrieved."
+    return
+  fi
+
+  cat > "$(echo ${TMP_DIR}/ssh-ca.json)" << EOF
+{
+    "public_key": "$(cat ${VAULT_PUBLIC_SSH_KEY})",
+    "valid_principals": "${SSH_USER}"
+}
+EOF
+
+  if ! curl -s --fail -H "X-Vault-Token: ${VAULT_TOKEN}" -X POST -d @${TMP_DIR}/ssh-ca.json \
+      ${VAULT_ADDR}/v1/ssh-client/sign/ssh-user | jq -r .data.signed_key > ${VAULT_SIGNED_KEY} ; then
+    echo "[ERR] Failed to sign public key."
+    return
+  fi
+}
+
+vault_ssh () {
+  if [[ -z "${1}" ]]; then
+    echo "[INFO] Usage: vssh user@host [-p 2222]"
+    return
+  fi
+
+  if [[ "${1}" =~ ^-+ ]]; then
+    echo "[ERR] Additional SSH flags must be passed after the hostname. e.g. 'vssh user@host -p 2222'"
+    return
+  elif [[ "${1}" =~ ^[a-zA-Z]+@[a-zA-Z]+ ]]; then
+    SSH_USER=$(echo $1 | cut -d'@' -f1)
+    SSH_HOST=$(echo $1 | cut -d'@' -f2)
+  else
+    SSH_USER=$(whoami)
+    SSH_HOST=${1}
+  fi
+
+  VAULT_PRIVATE_SSH_KEY=~/.ssh/id_ed25519_vault_shw
+  VAULT_SIGNED_KEY=$(echo ".ssh/id_ed25519_${SSH_USER}.signed.pub")
+
+  # sign the public key
+  vault_sign_key
+
+  # shift arguments one to the left to remove target address
+  shift 1
+
+  # construct an SSH command with the credentials, and append any extra args
+  ssh -i ${VAULT_SIGNED_KEY} -i ${VAULT_PRIVATE_SSH_KEY} ${SSH_USER}@${SSH_HOST} $@
+}
+
+git_branch_clean() {
+  git branch | grep -vE 'main$|master$' | xargs git branch -d
+  git remote prune origin
+}
+
+alacritty_theme_switch() {
+    theme=${1}
+    if [ "$theme" = "light" ]; then
+        sed -i "s/dark.toml/light.toml/g" ~/.config/alacritty/alacritty.toml
+    elif [ "$theme" = "dark" ]; then
+        sed -i "s/light.toml/dark.toml/g" ~/.config/alacritty/alacritty.toml
+    else
+        echo "supported options: 'light|dark'"
+    fi
+}

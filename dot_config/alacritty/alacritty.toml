@@ -1,0 +1,111 @@
+live_config_reload = true
+
+import = [
+  "~/.config/alacritty/themes/dark.toml",
+]
+
+[env]
+WINIT_X11_SCALE_FACTOR = "1"
+
+[font]
+size = 9.0
+
+[font.bold]
+family = "Droid Sans Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "Droid Sans Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "Sudo"
+style = "Italic"
+
+[font.normal]
+family = "Droid Sans Mono"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "ScrollPageUp"
+key = "PageUp"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollPageDown"
+key = "PageDown"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollToTop"
+key = "Home"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollToBottom"
+key = "End"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "NumpadAdd"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "NumpadSubtract"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "Return"
+mods = "Control|Shift"
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[scrolling]
+history = 100000
+multiplier = 5
+
+[shell]
+args = ["--login"]
+program = "/usr/bin/bash"
+
+[window]
+dynamic_title = true
+title = "Alacritty"
+
+[window.padding]
+x = 15
+y = 10

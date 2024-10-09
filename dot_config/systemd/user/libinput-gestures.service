@@ -1,0 +1,11 @@
+[Unit]
+Description=libinput gesture daemon
+
+[Service]
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/libinput-gestures -c /home/shw/.config/libinput-gestures.conf
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=default.target

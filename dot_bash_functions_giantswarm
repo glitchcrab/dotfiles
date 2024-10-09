@@ -1,0 +1,113 @@
+function opsctl_login {
+    _kconfig_dir=".kube/clusters"
+
+    if [ "$#" -eq 1 ]; then
+        _kconfig_file="${1}.yaml"
+        _cluster="${1}"
+        _cluster_context="gs-${1}"
+    elif [ "$#" -eq 2 ]; then
+        _kconfig_file="${1}-${2}.yaml"
+        _cluster="${1} ${2}"
+        _cluster_context="gs-${1}-${2}-clientcert"
+    fi
+
+    if [ -f "${HOME}/${_kconfig_dir}/${_kconfig_file}" ]; then
+        rm "${HOME}/${_kconfig_dir}/${_kconfig_file}"
+    fi
+
+    opsctl login ${_cluster} --self-contained "${HOME}/${_kconfig_dir}/${_kconfig_file}"
+    _ret=$?
+
+    if [ "${_ret}" == "0" ]; then
+        if ! switch ${_cluster_context} 2>&1 | grep "not found" ; then
+#            if ! switch gs-${_cluster_context}-clientcert ; then
+#                switch
+#            fi
+            switch
+        fi
+        kubectl config set contexts.$(kubectl config current-context).namespace "kube-system" > /dev/null 2>&1
+    fi
+}
+
+function opsctl_login_with_teleport {
+    _old_kubeconfig=${KUBECONFIG}
+
+    _kconfig_dir=".kube/clusters"
+    if [ "$#" -eq 1 ]; then
+        _kconfig_file="${1}.yaml"
+        _cluster="${1}"
+        _tsh_cluster="${1}"
+        _cluster_context="gs-${1}"
+    elif [ "$#" -eq 2 ]; then
+        _kconfig_file="${1}-${2}.yaml"
+        _cluster="${1} ${2}"
+        _tsh_cluster="${1}-${2}"
+        _cluster_context="gs-${1}-${2}-clientcert"
+    fi
+
+    if [ -f "${HOME}/${_kconfig_dir}/${_kconfig_file}" ]; then
+        rm "${HOME}/${_kconfig_dir}/${_kconfig_file}"
+    fi
+
+    _tsh_ret=1
+    if tsh kube ls -f json | jq -e --arg CLUSTER "$_tsh_cluster" '.[] | select(.kube_cluster_name==$CLUSTER)' > /dev/null 2>&1 ; then
+        KUBECONFIG="${HOME}/${_kconfig_dir}/${_kconfig_file}"
+        echo "INF: logging into ${_tsh_cluster} via teleport"
+        tsh kube login ${_tsh_cluster}
+        _cluster_context="teleport.giantswarm.io-${_tsh_cluster}"
+        _tsh_ret=$?
+    fi
+
+    if [[ "${_tsh_ret}" -ne "0" ]]; then
+        opsctl login ${_cluster} --self-contained "${HOME}/${_kconfig_dir}/${_kconfig_file}"
+        echo "INF: logging into ${_tsh_cluster} via opsctl"
+        _cluster_context="gs-${_tsh_cluster}"
+        _opsctl_ret=$?
+    fi
+
+    if [ "${_tsh_ret}" == "0" ] || [ "${_opsctl_ret}" == "0" ]; then
+        if ! switch ${_cluster_context} 2>&1 | grep "not found" ; then
+            if ! switch gs-${_cluster_context}-clientcert ; then
+                switch
+            fi
+            switch
+        fi
+        kubectl config set contexts.$(kubectl config current-context).namespace "kube-system" > /dev/null 2>&1
+    else
+        echo "ERR: could not log into ${_cluster} with either teleport or opsctl"
+    fi
+
+    KUBECONFIG=${_old_kubeconfig}
+}
+
+function access {
+    gsctl select endpoint $1 &> /dev/null
+    if kubectl --context=giantswarm-${@: -1} cluster-info &> /dev/null; then
+        kubectl config use-context giantswarm-${@: -1} &> /dev/null
+        printf "\033[0;32mRe-using existing kubeconfig.\033[0m\n"
+        return 0
+    fi
+    if [ "$#" -eq 2 ]; then
+        gsctl create kubeconfig \
+            --endpoint=$1 \
+            --cluster=$2 \
+            --certificate-organizations=system:masters \
+            --ttl=1d \
+            &> /dev/null
+        if [ $? -eq 0 ]; then
+                printf "\033[0;32mCreated tenant cluster kubeconfig.\033[0m\n"
+        else
+                printf "\033[0;31mCould not create tenant cluster kubeconfig.\033[0m\n"
+        fi
+    fi
+    if [ "$#" -eq 1 ]; then
+        opsctl create kubeconfig \
+            --cluster=$1 \
+        &> /dev/null
+        if [ $? -eq 0 ]; then
+            printf "\033[0;32mCreated control plane kubeconfig.\033[0m\n"
+        else
+            printf "\033[0;31mCould not create control plane kubeconfig.\033[0m\n"
+        fi
+    fi
+}

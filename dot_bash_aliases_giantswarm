@@ -1,0 +1,36 @@
+alias access='access'
+alias aws-cli-auth='source /home/shw/code/giantswarm/personal/aws-cli-reauth/reauth.sh'
+alias cdr='cd ~/code/giantswarm/repos/'
+alias toolbox='echo docker run -it --name wealdy-debug --net=host --privileged --pid=host -u=0 -v /:/host --entrypoint /bin/bash glitchcrab/ubuntu-debug | xclip -i'
+
+alias o='opsctl'
+alias opsk='opsctl create kubeconfig -i $1'
+#alias opsl='opsctl login'
+alias opsl='opsctl_login_with_teleport'
+alias opslk='opsctl login --keep context'
+alias opss='opsctl ssh $1'
+alias opso='opsctl_open'
+
+alias kgs='kubectl gs'
+alias kgslogin='gs-login'
+
+alias gsle='gsctl list endpoints'
+alias gse='gsctl select endpoint $1'
+alias gslc='gsctl list clusters'
+alias gslr='gsctl list releases'
+alias gsk='gsctl create kubeconfig --certificate-organizations system:masters --ttl 1h -c $1'
+
+alias disable-git-gpg="sed -i 's/    gpgsign.*/    gpgsign = false/g' ~/.gitconfig"
+alias enable-git-gpg="sed -i 's/    gpgsign.*/    gpgsign = true/g' ~/.gitconfig"
+
+alias add-gs-sso-key="keychain --agents ssh --eval giantswarm-sso-ed25519"
+
+alias ghprr="gh pr create -a @me -r giantswarm/team-rocket"
+
+opsctl_open() {
+    if [[ -z $3 ]]; then
+        opsctl open -i $1 -a $2
+    else
+	opsctl open -i $1 -a $2 --tenant-cluster $3
+    fi
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=clipit clipboard manager
+
+[Service]
+ExecStart=/usr/bin/clipit
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

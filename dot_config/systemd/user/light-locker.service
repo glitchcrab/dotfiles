@@ -1,0 +1,11 @@
+[Unit]
+Description=lightdm locker
+
+[Service]
+Environment=XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+ExecStart=/usr/bin/light-locker --lock-on-suspend
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

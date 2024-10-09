@@ -1,0 +1,7 @@
+[Unit]
+Description=Regular wallpaper rotation
+RefuseManualStart=yes
+
+[Service]
+ExecStart=/home/shw/.local/bin/set-wallpaper.sh
+Type=oneshot

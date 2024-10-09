@@ -1,0 +1,10 @@
+[Unit]
+Description=Picom daemon
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/picom -bfCG --config /home/shw/.picom.conf
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=graphical.target

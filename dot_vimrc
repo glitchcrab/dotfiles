@@ -1,0 +1,115 @@
+" ensure plug.vim is installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'andrewstuart/vim-kubernetes'
+Plug 'tpope/vim-fugitive'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'hashivim/vim-terraform'
+Plug 'markonm/traces.vim'
+Plug 'yggdroot/indentline'
+Plug 'airblade/vim-gitgutter'
+Plug 'nordtheme/vim', {'as': 'nordtheme'}
+Plug 'cocopon/iceberg.vim'
+Plug 'github/copilot.vim'
+call plug#end()
+
+" yaml config
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+autocmd FileType yaml setlocal tabstop=2 softtabstop=-1 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
+
+:filetype plugin on
+:syntax on
+
+" highlight trailing whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+" highlight matches when searching
+set hlsearch
+" enable traversing carriage returns
+set whichwrap=b,s,<,>,[,]
+" disable folding
+set nofoldenable
+" don't return to the top of the file when searching
+set nowrapscan
+" always show status line
+set laststatus=2
+" enable smart tabs
+set smarttab
+"set number of spaces per tab
+set softtabstop=4
+set tabstop=4
+" enable smart indent
+"set smartindent
+"set number of auto-indent spaces
+set shiftwidth=4
+set shiftround
+"always use spaces instead of tabs
+set expandtab
+"don't hide backticks and show full URL strings
+let g:indentLine_conceallevel=0
+
+" stop indentline plugin hiding syntax characters
+" https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json
+let g:indentLine_concealcursor = "nc"
+
+set cindent cinkeys-=0#
+
+" hashivim/vim-terraform configuration
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+
+" add diff for unsaved changes
+command DiffUnsaved execute 'w !git diff --no-index % -'
+
+" launch NERDTree with Ctrl+n
+map <C-n> :NERDTreeToggle<CR>
+" close NERDTree after opening a file
+let NERDTreeQuitOnOpen=1
+
+" VISUAL CONFIGURATION
+
+" Airline configuration
+" let g:airline#extensions#tabline#enabled = 1
+" set statusbar theme
+let g:airline_theme='base16_tomorrow'
+
+" set colour support
+"set t_Co=256
+colorscheme iceberg
+
+" define a function to toggle the sign column
+function! ToggleSignColumn()
+    if &signcolumn == "yes"
+        let &signcolumn="no"
+    else
+        let &signcolumn="yes"
+    endif
+endfunction
+" set keybinding to call function
+map <C-s> :call ToggleSignColumn()<CR>
+
+" vim-go CONFIGURATION
+" auto-lint on save
+" let g:go_metalinter_autosave = 1
+" show type info in the status line
+let g:go_auto_type_info = 1
+" decrease status line update time (default 800ms)
+set updatetime=100
+" enable syntax highlighting
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1
