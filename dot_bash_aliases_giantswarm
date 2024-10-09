@@ -27,6 +27,12 @@ alias add-gs-sso-key="keychain --agents ssh --eval giantswarm-sso-ed25519"
 
 alias ghprr="gh pr create -a @me -r giantswarm/team-rocket"
 
+alias tshssh='tshfzf'
+
+tshfzf() {
+  tsh ls | fzf | awk '{print $1}' | cut -d'.' -f1 | xargs -o -I {} tsh ssh root@node={}
+}
+
 opsctl_open() {
     if [[ -z $3 ]]; then
         opsctl open -i $1 -a $2
