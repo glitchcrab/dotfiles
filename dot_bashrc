@@ -53,12 +53,6 @@ if [ -f ~/.bash_env ]; then
     . ~/.bash_env
 fi
 
-HOST_VARS="/home/shw/.bash_vars_$(hostname -s)"
-# source host-specific vars
-if [ -f  "${HOST_VARS}" ]; then
-    . ${HOST_VARS}
-fi
-
 # source generic functions
 if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions

@@ -9,6 +9,11 @@ function password_generator() {
 }
 
 function btrfs_root_snapshot() {
+{{ if eq .chezmoi.hostname "phoenix" }}
+    export ROOTFS=/dev/mapper/rootfs
+{{ else if eq .chezmoi.hostname "raleigh" }}
+    export ROOTFS=/dev/mapper/arch-rootfs
+{{ end }}
     TODAY=`date -I`
     NOW=`date +"%Y-%m-%d_%H-%S"`
 
