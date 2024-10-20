@@ -1,0 +1,7 @@
+Include includes.d/*
+
+ServerAliveInterval 15
+ServerAliveCountMax 20
+
+Host *
+    IPQoS reliability
