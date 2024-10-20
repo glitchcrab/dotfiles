@@ -3,7 +3,7 @@ Description=Picom daemon
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/picom -bfCG --config /home/shw/.picom.conf
+ExecStart=/usr/bin/picom -b --config /home/shw/.picom.conf
 Environment=DISPLAY=:0
 
 [Install]
