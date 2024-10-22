@@ -179,3 +179,11 @@ alacritty_theme_switch() {
         echo "supported options: 'light|dark'"
     fi
 }
+
+rbw_find() {
+    if [ "${1}" == "full" ] || [ "${1}" == "notes" ]; then
+        rbw ls | fzf | xargs -o -I {} rbw get --full "{}"
+    else
+        rbw ls | fzf | xargs -o -I {} rbw get "{}"
+    fi
+}
