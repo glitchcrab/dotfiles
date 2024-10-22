@@ -16,6 +16,7 @@
     p = remote prune origin
     undo = reset --mixed
     clean-branches = !git branch | xargs git branch -D
+    tag-by-date = for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags
 [diff]
     tool = meld
 [difftool]
