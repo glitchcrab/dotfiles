@@ -17,6 +17,8 @@
     undo = reset --mixed
     clean-branches = !git branch | xargs git branch -D
     tag-by-date = for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags
+    recent-branches = !git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short) %(objectname:short) %(committerdate:format:%F)' | column -t | sort -k3 | head -n 10
+    sw = !git switch $(git branch -a --format '%(refname:short)' | sed 's~origin/~~' | sort | uniq | fzf)
 [diff]
     tool = meld
 [difftool]
