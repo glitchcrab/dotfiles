@@ -184,7 +184,7 @@ rbw_find() {
     if [ "${1}" == "full" ] || [ "${1}" == "notes" ]; then
         rbw ls | fzf | xargs -o -I {} rbw get --full "{}"
     else
-        rbw ls | fzf | xargs -o -I {} rbw get "{}"
+        rbw ls | fzf | xargs -o -I {} rbw get --field password --clipboard "{}"
     fi
 }
 
