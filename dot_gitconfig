@@ -32,6 +32,7 @@
 [core]
     excludesfile = /home/shw/.gitignore_user
     hooksPath = /home/shw/.git-hooks
+    attributesfile = /home/shw/.config/git/attributes
 [pull]
     rebase = false
 [hooks]
@@ -69,3 +70,5 @@
 
 [includeIf "gitdir:~/code/giantswarm/repos/"]
     path = ~/.gitconfig-work
+[diff "dyff"]
+	command = "dyff_between() { dyff --color on between --omit-header \"$2\" \"$5\"; }; dyff_between"
