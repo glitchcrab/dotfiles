@@ -50,6 +50,7 @@ alias kgall='kubectl_get_all'
 alias kpf='kubectl port-forward'
 alias kc='kubectl config current-context'
 alias kns='kubens'
+alias krmfinalizer="kubectl patch  --type='merge' -p '{\"metadata\":{\"finalizers\":[]}}'"
 
 # execute switch function provided by kubeswitch
 alias s='switch'
