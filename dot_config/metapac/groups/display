@@ -1,0 +1,9 @@
+arch = [
+  "accountsservice",
+  "arandr",
+  "autorandr",
+  "brillo",
+  "bumblebee",
+  "clipit",
+  "dmenu",
+]
