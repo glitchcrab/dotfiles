@@ -2,6 +2,7 @@ arch = [
   "acpi",
   "arch-install-scripts",
   "base",
+  "base-devel",
   "bash-completion",
   "bat",
   "btrfs-progs",
@@ -105,4 +106,5 @@ arch = [
   "bind",
   "openssl-1.1",
   "chezmoi",
+  "metapac-bin"
 ]

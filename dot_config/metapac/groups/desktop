@@ -98,4 +98,8 @@ arch = [
   "microsoft-edge-stable-bin",
   "freerdp",
   "torbrowser-launcher",
+  "autorestic-bin",
+  "tod-bin",
+  "todoist-nativefier",
+  "tigervnc"
 ]

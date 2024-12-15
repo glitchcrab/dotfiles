@@ -24,9 +24,8 @@ arch = [
   "gron",
   "glow",
   "yj-bin",
-  "code",
+  "visual-studio-code-bin",
   "difftastic",
   "hugo",
-  "code-marketplace",
   "git-cliff",
 ]

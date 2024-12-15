@@ -23,6 +23,7 @@ arch = [
   "openvpn-update-systemd-resolved",
   "tekton-cli",
   "jre-openjdk",
-  "teleport-bin",
+  "teleport-client-bin",
   "keybase-bin",
+  "azure-cli"
 ]
