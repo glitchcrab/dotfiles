@@ -1,3 +1,0 @@
-aur_helper: paru
-warn_not_symlinks: true
-disabled_backends: ["python"]

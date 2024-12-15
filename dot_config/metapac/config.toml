@@ -2,4 +2,4 @@ arch_package_manager = "paru"
 disabled_backends = ["apt", "brew", "cargo", "dnf", "flatpak", "pipx", "rustup", "snap", "winget", "xbps"]
 
 [hostname_groups]
-phoenix.analbeard.com = ["audio", "base", "desktop", "development", "display", "kubernetes", "laptop", "wireless", "phoenix"]]
+'phoenix.analbeard.com' = ["audio", "base", "desktop", "development", "display", "kubernetes", "laptop", "wireless", "phoenix"]
