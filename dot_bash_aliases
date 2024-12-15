@@ -42,6 +42,7 @@ alias kdel='kubectl delete'
 alias kdes='kubectl describe'
 alias ka='kubectl apply'
 alias kexec='kubectl exec -it'
+alias kxec='kubectl_exec_fzf'
 alias kgev="kubectl get events --sort-by='.metadata.creationTimestamp'"
 alias kl='kubectl logs'
 alias klf='kubectl logs -f'

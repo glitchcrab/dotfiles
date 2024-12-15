@@ -187,3 +187,7 @@ rbw_find() {
         rbw ls | fzf | xargs -o -I {} rbw get "{}"
     fi
 }
+
+kubectl_exec_fzf() {
+    kubectl get pods -A -o custom-columns=NAME:.metadata.namespace,NAMESPACE:.metadata.name --no-headers=true | fzf | xargs -o -l bash -c 'kubectl exec -it -n $0 $1 -- sh'
+}
