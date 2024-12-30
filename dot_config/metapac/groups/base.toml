@@ -51,7 +51,6 @@ arch = [
   "nvme-cli",
   "openssh",
   "os-prober",
-  "pacdef",
   "pacman-contrib",
   "pacutils",
   "parted",
