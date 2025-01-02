@@ -7,6 +7,4 @@ arch = [
   "pipewire-alsa",
   "pipewire-pulse",
   "playerctl",
-  "pulseaudio-ctl",
-  "libopenaptx-git",
 ]

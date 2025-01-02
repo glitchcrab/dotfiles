@@ -13,6 +13,12 @@ def vars(hostname, screenlayout):
             'left_display': 'DP3',
             'right_display': 'DP1'
         }
+    elif hostname.startswith("cheyenne"):
+        host_vars = {
+            'primary_display': 'eDP-1',
+            'left_display': 'DP3',
+            'right_display': 'DP1'
+        }
 
     bind_progs = {
         "[class=\"^Firefox$\"]": "1",

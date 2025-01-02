@@ -1,0 +1,4 @@
+arch = [
+  "pulseaudio-ctl",
+  "libopenaptx-git",
+]
