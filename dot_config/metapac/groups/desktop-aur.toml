@@ -1,22 +1,11 @@
 arch = [
-    "otf-helvetica-neue",
-    "joplin-desktop",
     "libinput-gestures",
     "mplus-font",
     "numix-circle-icon-theme-git",
-    "pepper-flash",
     "raw-thumbnailer",
     "ttf-material-design-iconic-font",
     "ttf-meslo",
-    "vimix-icon-theme",
-    "xcursor-neutral",
-    "lightdm-settings",
-    "nordic-theme",
     "numix-gtk-theme",
     "paper-gtk-theme-git",
-    "ttf-apple-emoji",
-    "microsoft-edge-stable-bin",
     "autorestic-bin",
-    "tod-bin",
-    "todoist-nativefier"
 ]

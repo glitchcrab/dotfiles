@@ -4,4 +4,5 @@ arch = [
   "autorandr",
   "bumblebee",
   "dmenu",
+  "python-jinja",
 ]

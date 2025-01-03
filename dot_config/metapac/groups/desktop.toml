@@ -53,6 +53,7 @@ arch = [
   "spotify",
   "system-config-printer",
   "terminus-font",
+  "ttf-droid",
   "ttf-font-awesome",
   "ttf-hack",
   "ttf-inconsolata",
