@@ -50,19 +50,19 @@ manage_picom() {
 
 set_layout() {
     if [ $LAYOUT == "two_mon" ]; then
-{{ if eq .chezmoi.hostname "phoenix" }}
+{{- if eq .chezmoi.hostname "phoenix" }}
         xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x1200 --rotate normal --output DP1 --off --output HDMI1 --mode 1920x1200 --pos 0x0 --rotate normal --output DP2 --mode 1920x1200 --pos 1920x0 --rotate normal --output HDMI2 --off
-{{ else if eq .chezmoi.hostname "cheyenne" }}
+{{- else if eq .chezmoi.hostname "cheyenne" }}
         xrandr --output eDP-1 --primary --mode 1920x1200 --pos 3840x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-2-5 --off --output DP-2-5-5 --mode 1920x1200 --pos 0x0 --rotate normal --output DP-2-6 --off --output DP-2-6-6 --mode 1920x1200 --pos 1920x0 --rotate normal
-{{ end }}
+{{- end }}
     elif [ $LAYOUT == "one_mon" ]; then
         xrandr --output eDP1 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output DP1 --off --output HDMI1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP2 --off --output HDMI2 --off
     elif [ $LAYOUT == "no_mon" ]; then
-{{ if eq .chezmoi.hostname "phoenix" }}
+{{- if eq .chezmoi.hostname "phoenix" }}
         xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --off --output DP2 --off --output HDMI1 --off --output HDMI2 --off
-{{ else if eq .chezmoi.hostname "cheyenne" }}
-    xrandr --output eDP-1 --primary --mode 1920x1200 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-2-5 --off --output DP-2-5-5 --off --output DP-2-6 --off --output DP-2-6-6 --off
-{{ end }}
+{{- else if eq .chezmoi.hostname "cheyenne" }}
+        xrandr --output eDP-1 --primary --mode 1920x1200 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-2-5 --off --output DP-2-5-5 --off --output DP-2-6 --off --output DP-2-6-6 --off
+{{- end }}
     else
         exit 1
     fi
