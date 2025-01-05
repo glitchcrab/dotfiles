@@ -16,8 +16,8 @@ def vars(hostname, screenlayout):
     elif hostname.startswith("cheyenne"):
         host_vars = {
             'primary_display': 'eDP-1',
-            'left_display': 'DP3',
-            'right_display': 'DP1'
+            'left_display': 'DP-2-5-5',
+            'right_display': 'DP-2-6-6'
         }
 
     bind_progs = {
