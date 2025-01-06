@@ -2,7 +2,11 @@
 
 MONCOUNT=`xrandr | grep connected | grep -v disconnected | wc -l`
 #BG_DIR=$HOME/Dropbox/Wallpaper/1920x1200
+{{- if eq .chezmoi.hostname "phoenix" }}
 BG_DIR=$HOME/Documents/nextcloud/images/Wallpaper/1920x1200
+{{- else if eq .chezmoi.hostname "cheyenne" }}
+BG_DIR=${HOME}/Documents/images/wallpapers
+{{- end }}
 
 # ensure array is empty
 unset files
