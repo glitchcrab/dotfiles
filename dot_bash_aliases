@@ -20,6 +20,7 @@ alias ansible-venv='source ~/code/venvs/ansible/bin/activate'
 # rescan yubikeys for GPG keys
 alias scan-yubikey='gpg-connect-agent "scd serialno" "learn --force" /bye'
 alias ,rbw='rbw_find'
+alias cm='chezmoi'
 
 # allow watch to be chained with further aliases
 alias watch='watch '
