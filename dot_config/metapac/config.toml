@@ -4,6 +4,34 @@ disabled_backends = ["apt", "brew", "cargo", "dnf", "flatpak", "pipx", "rustup",
 hostname_groups_enabled = true
 
 [hostname_groups]
-'phoenix.analbeard.com' = ["audio", "base", "desktop", "development", "display", "kubernetes", "laptop", "wireless", "phoenix"]
-'cheyenne.analbeard.com' = ["base", "desktop", "display", "laptop", "wireless", "temp"]
-#'cheyenne.analbeard.com' = ["audio", "base", "desktop", "development", "display", "kubernetes", "laptop", "wireless", "cheyenne"]
+'phoenix.analbeard.com' = [
+    "audio",
+    "audio-aur",
+    "base",
+    "desktop",
+    "desktop-aur",
+    "development",
+    "development-aur",
+    "display",
+    "kubernetes",
+    "kubernetes-aur",
+    "laptop",
+    "wireless",
+    "phoenix"
+]
+'cheyenne.analbeard.com' = [
+    "audio",
+    "audio-aur",
+    "base",
+    "desktop",
+    "desktop-aur",
+    "development",
+    "development-aur",
+    "display",
+    "kubernetes",
+    "kubernetes-aur",
+    "laptop",
+    "wireless",
+    "cheyenne",
+    "cheyenne-aur",
+]
