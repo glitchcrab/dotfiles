@@ -1,0 +1,7 @@
+arch = [
+  "gsctl-bin",
+  "aws-cli-v2",
+  "keybase-bin",
+  "openvpn-update-systemd-resolved",
+  "teleport-client-bin",
+]

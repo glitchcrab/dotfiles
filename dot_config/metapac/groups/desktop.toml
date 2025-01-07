@@ -75,5 +75,6 @@ arch = [
   "transmission-gtk",
   "freerdp",
   "torbrowser-launcher",
-  "tigervnc"
+  "tigervnc",
+  "dhcpcd",
 ]

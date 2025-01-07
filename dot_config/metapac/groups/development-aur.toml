@@ -1,0 +1,9 @@
+arch = [
+  "apache-tools",
+  "terraform-docs-bin",
+  "tflint-bin",
+  "shellcheck-bin",
+  "tfsec-bin",
+  "yj-bin",
+  "visual-studio-code-bin",
+]

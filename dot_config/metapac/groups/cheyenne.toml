@@ -1,0 +1,13 @@
+arch = [
+  "intel-ucode",
+  "s3cmd",
+  "slack-desktop",
+  "borgmatic",
+  "intel-undervolt",
+  "pam-u2f",
+  "pam_mount",
+  "yubikey-full-disk-encryption",
+  "lastpass-cli",
+  "tekton-cli",
+  "azure-cli"
+]
