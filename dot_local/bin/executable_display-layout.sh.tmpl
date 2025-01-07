@@ -49,23 +49,52 @@ manage_picom() {
 }
 
 set_layout() {
-    if [ $LAYOUT == "two_mon" ]; then
 {{- if eq .chezmoi.hostname "phoenix" }}
-        xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x1200 --rotate normal --output DP1 --off --output HDMI1 --mode 1920x1200 --pos 0x0 --rotate normal --output DP2 --mode 1920x1200 --pos 1920x0 --rotate normal --output HDMI2 --off
+    primaryDisplay="eDP1"
 {{- else if eq .chezmoi.hostname "cheyenne" }}
-        xrandr --output eDP-1 --primary --mode 1920x1200 --pos 3840x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-2-5 --off --output DP-2-5-5 --mode 1920x1200 --pos 0x0 --rotate normal --output DP-2-6 --off --output DP-2-6-6 --mode 1920x1200 --pos 1920x0 --rotate normal
+    primaryDisplay="eDP-1"
 {{- end }}
-    elif [ $LAYOUT == "one_mon" ]; then
-        xrandr --output eDP1 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output DP1 --off --output HDMI1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP2 --off --output HDMI2 --off
-    elif [ $LAYOUT == "no_mon" ]; then
-{{- if eq .chezmoi.hostname "phoenix" }}
-        xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --off --output DP2 --off --output HDMI1 --off --output HDMI2 --off
-{{- else if eq .chezmoi.hostname "cheyenne" }}
-        xrandr --output eDP-1 --primary --mode 1920x1200 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-2-5 --off --output DP-2-5-5 --off --output DP-2-6 --off --output DP-2-6-6 --off
-{{- end }}
-    else
-        exit 1
+    leftDisplaySerial="7MT0191D115L"
+    rightDisplaySerial="7MT0191J0GEU"
+
+    # array to hold args passed to xrandr command
+    declare -a xrandrArgs
+
+    # create a temporary file for xrandr state
+    xrandrState=$(mktemp --suffix=_xrandr_state)
+
+    # get xrandr output in JSON
+    xrandr --properties | jc --xrandr > ${xrandrState}
+
+    # always add the primary display to xrandr
+    xrandrArgs+=("--output" "${primaryDisplay}" "--primary" "--mode" "1920x1200" "--pos" "0x0" "--rotate" "normal")
+
+    externalDisplaysConnected=$(xrandr | awk '!/eDP-1/ && / connected / {print $1}' | wc -l)
+    if [ $externalDisplaysConnected == "2" ]; then
+        # get the left display output name based on display serial
+        leftDisplayID="$(jq --arg id "${leftDisplaySerial}" -r '.screens[].devices[] | select(.props.EdidModel.serial_number==$id) | .device_name' ${xrandrState})"
+        # get the right display output name based on display serial
+        rightDisplayID="$(jq --arg id "${rightDisplaySerial}" -r '.screens[].devices[] | select(.props.EdidModel.serial_number==$id) | .device_name' ${xrandrState})"
+
+        # add right display to args to the left of the primary display
+        xrandrArgs+=("--output" "${rightDisplayID}" "--mode" "1920x1200" "--left-of" "${primaryDisplay}" "--rotate" "normal")
+
+        # add left display to args to the left of the right display
+        xrandrArgs+=("--output" "${leftDisplayID}" "--mode" "1920x1200" "--left-of" "${rightDisplayID}" "--rotate" "normal")
     fi
+
+    # iterate over disconnected displays and add to the xrandr args
+    for screen in $(jq -r '.screens[].devices[] | @base64' ${xrandrState}); do
+        connected=$(echo ${screen} | base64 -d | jq -r .is_connected)
+        identifier="$(echo ${screen} | base64 -d | jq -r .device_name)"
+        if [ "${connected}" = false ] ; then
+            xrandrArgs+=("--output" "${identifier}" "--off")
+        fi
+    done
+
+    xrandr "${xrandrArgs[@]}"
+
+    rm "${xrandrState}"
 }
 
 create_i3_conf() {
@@ -110,6 +139,12 @@ misc_config() {
 }
 
 create_i3_conf
+# only run layout config if arg "xrandr" is passed to script
+if [ ! -z "${1}" ]; then
+    if [ ${1} == "xrandr" ]; then
+        set_layout
+    fi
+fi
 reload_polybar
 set_wallpaper
 misc_config
