@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 DISPLAY=:0
 
 if [ `xrandr | grep -E '\sconnected' | wc -l` -gt 1 ]; then
@@ -9,7 +10,9 @@ else
   export TOPMARGIN=0
 fi
 
-pkill -x polybar
+for bar in $(systemctl --type=service --state=running --user | awk '/polybar/ {print $1}'); do
+    systemctl --user stop ${bar}
+done
 
 while pgrep -u $UID -x polybar >/dev/null; do
     echo "waiting for polybar process to die"
@@ -18,6 +21,6 @@ done
 
 if type "xrandr" > /dev/null; then
     for display in $(xrandr | awk '/ connected/ {print $1}'); do
-        /usr/bin/polybar -c ~/.config/polybar/config.ini --reload ${display} & disown
+        systemctl --user start polybar@${display}
     done
 fi
