@@ -67,7 +67,7 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-{{- if eq .chezmoi.hostname "phoenix" }}
+{{- if or (eq .chezmoi.hostname "phoenix") (eq .chezmoi.hostname "cheyenne") }}
 # source giantswarm env vars
 if [ -f ~/.bash_env_giantswarm ]; then
     . ~/.bash_env_giantswarm
