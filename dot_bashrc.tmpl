@@ -45,7 +45,7 @@ fi
 
 # make keychain work with ssh-agent
 #eval `keychain --agents gpg,ssh --eval id_rsa 316053AB --nogui -Q`
-{{- if eq .chezmoi.hostname "phoenix" }}
+{{- if or (eq .chezmoi.hostname "phoenix") (eq .chezmoi.hostname "cheyenne") }}
 eval `keychain --agents ssh --eval id_ed25519 id_giantswarm --nogui --quiet`
 {{- else if eq .chezmoi.hostname "raleigh" }}
 eval `keychain --agents ssh --eval id_ed25519 --nogui --quiet`
