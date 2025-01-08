@@ -8,6 +8,7 @@ Type=simple
 Restart=always
 #RemainAfterExit=false
 #KillMode=process
+EnvironmentFile=/tmp/polybar.env
 PIDFile=/run/polybar-%i.pid
 ExecStart=/usr/bin/polybar --log=warning -c /home/shw/.config/polybar/config.ini --reload %i
 

@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
 DISPLAY=:0
+ENVFILE=/tmp/polybar.env
 
 if [ `xrandr | grep -E '\sconnected' | wc -l` -gt 1 ]; then
-  export SIDEMARGIN=20
-  export TOPMARGIN=5
+    SIDEMARGIN=20
+    TOPMARGIN=5
 else
-  export SIDEMARGIN=0
-  export TOPMARGIN=0
+    SIDEMARGIN=0
+    TOPMARGIN=0
 fi
+
+echo "SIDEMARGIN=${SIDEMARGIN}" > ${ENVFILE}
+echo "TOPMARGIN=${TOPMARGIN}" >> ${ENVFILE}
 
 for bar in $(systemctl --type=service --state=running --user | awk '/polybar/ {print $1}'); do
     systemctl --user stop ${bar}
