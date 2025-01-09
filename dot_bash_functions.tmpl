@@ -191,3 +191,32 @@ rbw_find() {
 kubectl_exec_fzf() {
     kubectl get pods -A -o custom-columns=NAME:.metadata.namespace,NAMESPACE:.metadata.name --no-headers=true | fzf | xargs -o -l bash -c 'kubectl exec -it -n $0 $1 -- sh'
 }
+
+pkg_file_diff() {
+    if [ ! -z "${1}" ] ; then
+        file="${1}"
+    else
+        echo "usage: pkgfilediff $filepath diff|view"
+        return
+    fi
+
+    pacman -Qo ${file} > /dev/null 2>&1
+    ret=$?
+
+    if [ ${ret} -gt 0 ]; then
+        echo "ERR: File ${file} not owned by any package"
+        exit 0
+    fi
+
+    pkg=$(pacman -Qo "${file}" | rev | cut -d ' ' -f2 | rev)
+    pkgVer=$(pacman -Qo "${file}" | rev | cut -d ' ' -f1 | rev)
+
+    pkgFile=$(ls /var/cache/pacman/pkg/ | grep "${pkg}-${pkgVer}" | grep -v sig)
+    pkgFilePath="/var/cache/pacman/pkg/${pkgFile}"
+
+    if [ -z "${2}" ] || [ "${2}" == "diff" ]; then
+        tar xf $pkgFilePath -O ${file#/} | sudo diff -Naur $file -
+    else
+        tar xf $pkgFilePath -O ${file#/} | sudo delta $file -
+    fi
+}

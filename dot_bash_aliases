@@ -21,6 +21,7 @@ alias ansible-venv='source ~/code/venvs/ansible/bin/activate'
 alias scan-yubikey='gpg-connect-agent "scd serialno" "learn --force" /bye'
 alias ,rbw='rbw_find'
 alias cm='chezmoi'
+alias pkgfilediff='pkg_file_diff'
 
 # allow watch to be chained with further aliases
 alias watch='watch '
