@@ -1,6 +1,19 @@
 #!/usr/bin/env python
 
+import subprocess
+
 def vars(hostname, screenlayout):
+
+    # get connected monitors
+    xrandr_cmd = "xrandr | awk '/ connected/' | awk '{print $1}'"
+    run_cmd = subprocess.Popen(xrandr_cmd,shell=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    monitors = run_cmd.communicate()[0].split()
+
+    # ensure array always has three elements
+    if len(monitors) == 1:
+        monitors.append('dummy1')
+        monitors.append('dummy2')
+
     if hostname.startswith("raleigh"):
         host_vars = {
             'primary_display': 'eDP-1',
@@ -15,9 +28,9 @@ def vars(hostname, screenlayout):
         }
     elif hostname.startswith("cheyenne"):
         host_vars = {
-            'primary_display': 'eDP-1',
-            'left_display': 'DP-2-5-5',
-            'right_display': 'DP-2-6-6'
+            'primary_display': str(monitors[0]),
+            'left_display': str(monitors[1]),
+            'right_display': str(monitors[2])
         }
 
     bind_progs = {

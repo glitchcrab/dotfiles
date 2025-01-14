@@ -8,4 +8,5 @@ arch = [
     "numix-gtk-theme",
     "paper-gtk-theme-git",
     "autorestic-bin",
+    "nordic-theme",
 ]

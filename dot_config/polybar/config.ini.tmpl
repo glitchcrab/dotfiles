@@ -60,7 +60,7 @@ padding-left = 0
 padding-right = 2
 
 module-margin-left = 1
-module-margin-right = 2
+module-margin-right = 1
 
 font-0 = fixed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
@@ -89,6 +89,53 @@ scroll-down = "#i3.next"
 [bar/DP1]
 monitor = DP1
 {{- else if eq .chezmoi.hostname "cheyenne" }}
+[bar/DP-2-5-5]
+monitor = DP-2-5-5
+
+fixed-center = true
+
+width = 100%
+height = 40
+radius = 3.0
+
+background = ${color.background}
+foreground = ${color.foreground}
+
+line-size = 2
+line-color = ${color.primary}
+
+border-left-size = ${vars.bar-margin-side}
+border-right-size = ${vars.bar-margin-side}
+border-top-size = ${vars.bar-margin-top}
+border-color = ${vars.bar-background-colour}
+
+padding-left = 2
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
+font-3 = "Font Awesome 6 Free:style=Regular:pixelsize=8;1"
+font-4 = "Font Awesome 6 Free:style=Solid:pixelsize=8;1"
+font-5 = "Font Awesome 6 Brands:pixelsize=8;1"
+
+modules-left = powermenu i3
+modules-center = time date
+modules-right = todoist-today homefilesystem filesystem volume backlight battery
+
+separator =
+
+dim-value = 1.0
+
+wm-restack = i3
+enable-ipc = true
+
+scroll-up = "#i3.prev"
+scroll-down = "#i3.next"
+
 [bar/DP-3-5-5]
 monitor = DP-3-5-5
 {{- end }}
@@ -143,6 +190,53 @@ scroll-down = "#i3.next"
 [bar/DP3]
 monitor = DP3
 {{- else if eq .chezmoi.hostname "cheyenne" }}
+[bar/DP-2-6-6]
+monitor = DP-2-6-6
+
+fixed-center = true
+
+width = 100%
+height = 40
+radius = 3.0
+
+background = ${color.background}
+foreground = ${color.foreground}
+
+line-size = 2
+line-color = ${color.primary}
+
+border-left-size = ${vars.bar-margin-side}
+border-right-size = ${vars.bar-margin-side}
+border-top-size = ${vars.bar-margin-top}
+border-color = ${vars.bar-background-colour}
+
+padding-left = 2
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
+font-3 = "Font Awesome 6 Free:style=Regular:pixelsize=8;1"
+font-4 = "Font Awesome 6 Free:style=Solid:pixelsize=8;1"
+font-5 = "Font Awesome 6 Brands:pixelsize=8;1"
+
+modules-left = powermenu i3
+modules-center = time date
+modules-right = todoist-today homefilesystem filesystem volume backlight battery
+
+separator =
+
+dim-value = 1.0
+
+wm-restack = i3
+enable-ipc = true
+
+scroll-up = "#i3.prev"
+scroll-down = "#i3.next"
+
 [bar/DP-3-6-6]
 monitor = DP-3-6-6
 {{- end }}

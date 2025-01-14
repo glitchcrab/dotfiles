@@ -72,9 +72,11 @@ arch = [
   "ttf-fira-code",
   "yubikey-manager-qt",
   "yubikey-manager",
+  "yubikey-personalization-gui",
   "transmission-gtk",
   "freerdp",
   "torbrowser-launcher",
   "tigervnc",
   "dhcpcd",
+  "nodejs",
 ]
