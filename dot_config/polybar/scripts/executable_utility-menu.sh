@@ -72,6 +72,8 @@ case $chosen in
             systemctl is-active openvpn-client@gridscale.service >/dev/null 2>&1 \
                 && sudo systemctl stop openvpn-client@gridscale.service \
                 || sudo systemctl start openvpn-client@gridscale.service
+            sleep 2
+            notify-send "gridscale vpn is now $(systemctl is-active openvpn-client@gridscale.service)"
         elif [[ $ans == "no" || $ans == "NO" || $ans == "n" || $ans == "N" ]]; then
             exit 0
         else
@@ -84,6 +86,8 @@ case $chosen in
             systemctl is-active openvpn-client@vultr.service >/dev/null 2>&1 \
                 && sudo systemctl stop openvpn-client@vultr.service \
                 || sudo systemctl start openvpn-client@vultr.service
+            sleep 2
+            notify-send "vultr vpn is now $(systemctl is-active openvpn-client@vultr.service)"
         elif [[ $ans == "no" || $ans == "NO" || $ans == "n" || $ans == "N" ]]; then
             exit 0
         else
@@ -94,8 +98,10 @@ case $chosen in
         ans=$(confirm_exit &)
         if [[ $ans == "yes" || $ans == "YES" || $ans == "y" || $ans == "Y" ]]; then
             systemctl --user is-active code-giantswarm.service >/dev/null 2>&1 \
-                && systemctl --user stop code-giantswarm.service \
-                || systemctl --user start code-giantswarm.service
+                && { systemctl --user stop code-giantswarm.service; status="umounted"; } \
+                || { systemctl --user start code-giantswarm.service; status="mounted"; }
+            sleep 2
+            notify-send "code/giantswarm is now ${status}"
         elif [[ $ans == "no" || $ans == "NO" || $ans == "n" || $ans == "N" ]]; then
             exit 0
         else
@@ -106,8 +112,10 @@ case $chosen in
         ans=$(confirm_exit &)
         if [[ $ans == "yes" || $ans == "YES" || $ans == "y" || $ans == "Y" ]]; then
             systemctl --user is-active code-personal.service >/dev/null 2>&1 \
-                && systemctl --user stop code-personal.service \
-                || systemctl --user start code-personal.service
+                && { systemctl --user stop code-personal.service; status="unmounted"; } \
+                || { systemctl --user start code-personal.service; status="mounted"; }
+            sleep 2
+            notify-send "code/personal is now ${status}"
         elif [[ $ans == "no" || $ans == "NO" || $ans == "n" || $ans == "N" ]]; then
             exit 0
         else
