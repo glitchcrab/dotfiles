@@ -79,7 +79,7 @@ listview {
     background-color:    @al;
     padding:             0px;
     columns:             1;
-    lines:               6;
+    lines:               7; /* CHANGE ME FOR MORE LINES SIMON - LOOK RIGHT HERE SIMON - IT'S HERE SIMON */
     spacing:             5px;
     cycle:               true;
     dynamic:             true;
