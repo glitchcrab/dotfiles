@@ -9,4 +9,5 @@ arch = [
     "autorestic-bin",
     "nordic-theme",
     "ttf-ms-fonts",
+    "todoist-nativefier",
 ]
