@@ -11,4 +11,5 @@ arch = [
   "kube-linter",
   "cfssl",
   "pwru",
+  "crane",
 ]
