@@ -1,6 +1,5 @@
 arch = [
     "libinput-gestures",
-    "mplus-font",
     "numix-circle-icon-theme-git",
     "raw-thumbnailer",
     "ttf-material-design-iconic-font",
@@ -9,4 +8,5 @@ arch = [
     "paper-gtk-theme-git",
     "autorestic-bin",
     "nordic-theme",
+    "ttf-ms-fonts",
 ]
