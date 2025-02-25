@@ -51,7 +51,7 @@ manage_picom() {
 set_layout() {
 {{- if eq .chezmoi.hostname "phoenix" }}
     primaryDisplay="eDP1"
-{{- else if eq .chezmoi.hostname "cheyenne" }}
+{{- else if or (eq .chezmoi.hostname "cheyenne") (eq .chezmoi.hostname "olympia") }}
     primaryDisplay="eDP-1"
 {{- end }}
     leftDisplaySerial="7MT0191D115L"

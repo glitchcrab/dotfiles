@@ -108,7 +108,7 @@ eval "$(starship init bash)"
 #eval `keychain --agents gpg,ssh --eval id_rsa 316053AB --nogui -Q`
 {{- if or (eq .chezmoi.hostname "phoenix") (eq .chezmoi.hostname "cheyenne") }}
 eval `keychain --agents ssh --eval id_ed25519 id_giantswarm --nogui --quiet`
-{{- else if eq .chezmoi.hostname "raleigh" }}
+{{- else if or (eq .chezmoi.hostname "raleigh") (eq .chezmoi.hostname "olympia") }}
 eval `keychain --agents ssh --eval id_ed25519 --nogui --quiet`
 {{- end }}
 alias add-gpg='eval `keychain --agents gpg --eval E19A963B5501AB6565F691C2988E9858747ABE88 --nogui --quiet`'

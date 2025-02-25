@@ -32,6 +32,12 @@ def vars(hostname, screenlayout):
             'left_display': str(monitors[1]),
             'right_display': str(monitors[2])
         }
+    elif hostname.startswith("olympia"):
+        host_vars = {
+            'primary_display': str(monitors[0]),
+            'left_display': str(monitors[1]),
+            'right_display': str(monitors[2])
+        }
 
     bind_progs = {
         "[class=\"^Firefox$\"]": "1",

@@ -34,7 +34,7 @@ bar-background-colour = #00ffffff
 {{- if eq .chezmoi.hostname "phoenix" }}
 [bar/eDP1]
 monitor = eDP1
-{{- else if eq .chezmoi.hostname "cheyenne" }}
+{{- else if or (eq .chezmoi.hostname "cheyenne") (eq .chezmoi.hostname "olympia") }}
 [bar/eDP-1]
 monitor = eDP-1
 {{- end }}
@@ -83,6 +83,7 @@ enable-ipc = true
 scroll-up = "#i3.prev"
 scroll-down = "#i3.next"
 
+{{- if or (eq .chezmoi.hostname "phoenix") (eq .chezmoi.hostname "cheyenne") }}
 ;; left display bar settings
 
 {{- if eq .chezmoi.hostname "phoenix" }}
@@ -183,7 +184,9 @@ enable-ipc = true
 
 scroll-up = "#i3.prev"
 scroll-down = "#i3.next"
+{{- end }}
 
+{{- if or (eq .chezmoi.hostname "phoenix") (eq .chezmoi.hostname "cheyenne") }}
 ;; right display bar settings
 
 {{- if eq .chezmoi.hostname "phoenix" }}
@@ -284,3 +287,4 @@ enable-ipc = true
 
 scroll-up = "#i3.prev"
 scroll-down = "#i3.next"
+{{- end }}

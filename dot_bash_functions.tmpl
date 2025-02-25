@@ -13,6 +13,8 @@ function btrfs_root_snapshot() {
     export ROOTFS=/dev/mapper/rootfs
 {{ else if eq .chezmoi.hostname "cheyenne" }}
     export ROOTFS=/dev/mapper/rootfs
+{{ else if eq .chezmoi.hostname "olympia" }}
+    export ROOTFS=/dev/mapper/rootfs
 {{ else if eq .chezmoi.hostname "raleigh" }}
     export ROOTFS=/dev/mapper/arch-rootfs
 {{ end }}
