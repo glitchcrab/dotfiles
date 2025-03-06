@@ -12,4 +12,5 @@ arch = [
   "azure-cli",
   "efitools",
   "sbctl",
+  "sof-firmware",
 ]
