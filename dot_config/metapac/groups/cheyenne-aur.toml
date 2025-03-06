@@ -4,4 +4,6 @@ arch = [
   "keybase-bin",
   "openvpn-update-systemd-resolved",
   "teleport-client-bin",
+  "1password",
+  "1password-cli",
 ]
