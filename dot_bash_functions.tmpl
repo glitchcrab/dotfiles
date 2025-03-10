@@ -14,7 +14,7 @@ function btrfs_root_snapshot() {
 {{ else if eq .chezmoi.hostname "cheyenne" }}
     export ROOTFS=/dev/mapper/rootfs
 {{ else if eq .chezmoi.hostname "olympia" }}
-    export ROOTFS=/dev/mapper/rootfs
+    export ROOTFS=/dev/mapper/arch-rootfs
 {{ else if eq .chezmoi.hostname "raleigh" }}
     export ROOTFS=/dev/mapper/arch-rootfs
 {{ end }}
@@ -22,7 +22,7 @@ function btrfs_root_snapshot() {
     NOW=`date +"%Y-%m-%d_%H-%S"`
 
     echo "mounting rootfs.."
-    sudo mount $ROOTFS /mnt
+    sudo mount $ROOTFS -o subvolid=0 /mnt
     sleep 2
     if [ -d /mnt/__snapshot/rootfs-$NOW ]; then
         echo "[FAILED]: Snapshot already exists"

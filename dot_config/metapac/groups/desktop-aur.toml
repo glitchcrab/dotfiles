@@ -10,4 +10,5 @@ arch = [
     "nordic-theme",
     "ttf-ms-fonts",
     "todoist-nativefier",
+    "clipit",
 ]
