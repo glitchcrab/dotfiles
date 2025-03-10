@@ -1,7 +1,7 @@
 arch = [
   "alacritty",
   "bitwarden",
- "chromium",
+  "chromium",
   "dialog",
   "dunst",
   "feh",
