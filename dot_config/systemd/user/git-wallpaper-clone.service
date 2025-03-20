@@ -1,0 +1,8 @@
+[Unit]
+Description=Update wallpapers from git repository
+
+[Service]
+WorkingDirectory=/home/shw/Documents/images/wallpapers
+ExecStart=/usr/bin/git pull
+Type=oneshot
+

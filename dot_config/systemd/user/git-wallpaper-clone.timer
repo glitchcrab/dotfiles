@@ -1,0 +1,10 @@
+[Unit]
+Description=Syncs wallpaper repo every day
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 10:00:*
+Persistent=True
+Unit=git-wallpaper-clone.service
+
+[Install]
+WantedBy=timers.target
