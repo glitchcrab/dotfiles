@@ -1,0 +1,11 @@
+arch = [
+    "downgrade",
+    "pkgbuild-introspection",
+    "reiserfsprogs",
+    "tcptraceroute",
+    "vim-markdown-git",
+    "wat-git",
+    "wormhole-william-bin",
+    "paru-bin",
+    "metapac-bin",
+]
