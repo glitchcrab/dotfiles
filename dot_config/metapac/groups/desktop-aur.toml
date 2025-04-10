@@ -9,6 +9,6 @@ arch = [
     "autorestic-bin",
     "nordic-theme",
     "ttf-ms-fonts",
-    "todoist-nativefier",
-    "clipit",
+    "clipit-git",
+    "localsend-bin",
 ]
