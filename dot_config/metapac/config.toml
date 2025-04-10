@@ -1,5 +1,5 @@
 arch_package_manager = "paru"
-disabled_backends = ["apt", "brew", "cargo", "dnf", "flatpak", "pipx", "rustup", "snap", "winget", "xbps"]
+disabled_backends = ["apt", "brew", "cargo", "dnf", "flatpak", "pipx", "snap", "winget", "xbps"]
 
 hostname_groups_enabled = true
 
