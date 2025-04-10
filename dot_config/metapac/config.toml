@@ -47,6 +47,7 @@ hostname_groups_enabled = true
     "development",
     "development-aur",
     "display",
+    "display-aur",
     "kubernetes",
     "kubernetes-aur",
     "laptop",
