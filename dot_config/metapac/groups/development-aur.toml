@@ -6,4 +6,5 @@ arch = [
   "tfsec-bin",
   "yj-bin",
   "visual-studio-code-bin",
+  "golangci-lint-bin",
 ]
