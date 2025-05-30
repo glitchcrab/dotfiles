@@ -1,4 +1,5 @@
 arch = [
   "brillo",
-  "clipit"
+  "clipit",
+  "systemd-numlockontty",
 ]
