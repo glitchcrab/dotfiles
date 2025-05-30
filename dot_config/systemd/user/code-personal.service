@@ -10,7 +10,7 @@ WantedBy=multi-user.target
 
 [Service]
 Type=exec
-ExecStart=/usr/bin/sshfs -f shw@code-server.tail85d9.ts.net:/home/shw/repos-personal /home/shw/code/personal -o _netdev,IdentityFile=/home/shw/.ssh/code-server-ed25519,reconnect,uid=2000,gid=2000,ServerAliveInterval=10,ServerAliveCountMax=1
+ExecStart=/usr/bin/sshfs -f shw@172.25.0.7:/home/shw/repos-personal /home/shw/code/personal -o _netdev,IdentityFile=/home/shw/.ssh/code-server-ed25519,reconnect,uid=2000,gid=2000,ServerAliveInterval=10,ServerAliveCountMax=1
 ExecStop=/usr/bin/umount /home/shw/code/personal
 Restart=on-failure
 RestartSec=20
