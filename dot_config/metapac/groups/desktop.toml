@@ -78,4 +78,5 @@ arch = [
   "dhcpcd",
   "nodejs",
   "barrier",
+  "nemo-share",
 ]
