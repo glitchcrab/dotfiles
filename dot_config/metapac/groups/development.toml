@@ -20,4 +20,5 @@ arch = [
   "hugo",
   "git-cliff",
   "sshfs",
+  "gopls",
 ]
