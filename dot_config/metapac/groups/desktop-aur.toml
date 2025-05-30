@@ -11,4 +11,5 @@ arch = [
     "ttf-ms-fonts",
     "clipit-git",
     "localsend-bin",
+    "vial-appimage",
 ]
