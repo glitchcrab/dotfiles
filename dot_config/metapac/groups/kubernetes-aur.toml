@@ -10,4 +10,5 @@ arch = [
   "vcluster-bin",
   "dyff-bin",
   "pinniped-bin",
+  "kubebuilder-bin",
 ]
