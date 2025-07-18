@@ -55,6 +55,8 @@ alias kpf='kubectl port-forward'
 alias kc='kubectl config current-context'
 alias kns='kubens'
 alias krmfinalizer="kubectl patch  --type='merge' -p '{\"metadata\":{\"finalizers\":[]}}'"
+alias kga='kubectl_get_all_resources'
+alias kai='kubectl ai --llm-provider=openai --model=gpt-4.1'
 
 # execute switch function provided by kubeswitch
 alias s='switch'
