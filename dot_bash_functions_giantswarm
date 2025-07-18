@@ -59,6 +59,7 @@ function opsctl_login_with_teleport {
     fi
 
     if [[ "${_tsh_ret}" -ne "0" ]]; then
+        echo "'${_cluster}' not found in teleport's inventory, using opsctl"
         opsctl login ${_cluster} --self-contained "${HOME}/${_kconfig_dir}/${_kconfig_file}"
         echo "INF: logging into ${_tsh_cluster} via opsctl"
         _cluster_context="gs-${_tsh_cluster}"
