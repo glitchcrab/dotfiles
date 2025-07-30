@@ -4,6 +4,7 @@ arch = [
   "helm",
   "krew",
   "kubectx",
+  "kubeseal",
   "kustomize",
   "sops",
   "talosctl",
