@@ -49,11 +49,7 @@ manage_picom() {
 }
 
 set_layout() {
-{{- if eq .chezmoi.hostname "phoenix" }}
-    primaryDisplay="eDP1"
-{{- else if or (eq .chezmoi.hostname "cheyenne") (eq .chezmoi.hostname "olympia") }}
     primaryDisplay="eDP-1"
-{{- end }}
     leftDisplaySerial="7MT0191D115L"
     rightDisplaySerial="7MT0191J0GEU"
 
@@ -101,7 +97,8 @@ create_i3_conf() {
     # create new i3 config based on $LAYOUT
     _i3_pid=$(pgrep i3)
     _i3_socket="/run/user/$_uid/i3/ipc-socket.$_i3_pid"
-    /home/$_user/.local/bin/i3_config_gen.py $LAYOUT $_user
+    i3-config-generator -layout $LAYOUT
+    #/home/$_user/.local/bin/i3_config_gen.py $LAYOUT $_user
     i3-msg -s ${_i3_socket} reload 2>&1
     i3-msg -s ${_i3_socket} restart 2>&1
 }
