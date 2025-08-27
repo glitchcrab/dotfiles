@@ -6,4 +6,5 @@ arch = [
   "teleport-client-bin",
   "1password",
   "1password-cli",
+  "aws-iam-authenticator-bin",
 ]
