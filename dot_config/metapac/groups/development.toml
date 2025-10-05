@@ -21,4 +21,5 @@ arch = [
   "git-cliff",
   "sshfs",
   "gopls",
+  "git-absorb",
 ]
