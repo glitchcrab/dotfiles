@@ -11,6 +11,7 @@ Restart=always
 EnvironmentFile=/tmp/polybar.env
 PIDFile=/run/polybar-%i.pid
 ExecStart=/usr/bin/polybar --log=warning -c /home/shw/.config/polybar/config.ini --reload %i
+TimeoutStopSec=10
 
 [Install]
 WantedBy=multi-user.target

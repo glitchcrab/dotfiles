@@ -16,6 +16,7 @@ echo "TOPMARGIN=${TOPMARGIN}" >> ${ENVFILE}
 
 for bar in $(systemctl --type=service --state=running --user | awk '/polybar/ {print $1}'); do
     systemctl --user stop ${bar}
+    pkill polybar || true
 done
 
 while pgrep -u $UID -x polybar >/dev/null; do
