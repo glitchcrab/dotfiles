@@ -1,0 +1,39 @@
+#  Barrier Server service barriers-@BARRIER_VERSION@
+#
+#  This file is part of Barrier.
+#
+#  This is a systemd template service for running the barriers server using a 
+#  specific port or IP. Instances are started using @[ip]:<port>. For example:
+#
+#  Starting:
+#   systemctl start barriers@0.0.0.0:24800
+#  or:
+#   systemctl start barriers@:24800
+#
+#  Enabling:
+#   systemctl enable barriers@0.0.0.0:24800
+#
+#  SSL data is stored in /var/lib/barrier/barrier<instance>/barrier/SSL for each
+#  instance.
+
+[Unit]
+Description=Barrier Server listening on %I (Open-source KVM software)
+Documentation=man:barriers(1) man:barrierc(1)
+Documentation=https://github.com/debauchee/barrier/wiki
+# Require network before starting barrierc
+After=network-online.target
+Wants=network-online.target
+# Don't run server if client or another server is running
+Conflicts=barrier-server@.service
+
+[Service]
+Type=simple
+# Log level may be FATAL, ERROR, WARNING, NOTE, INFO, DEBUG, DEBUG1, DEBUG2
+Environment=LOG_LEVEL=INFO
+Environment=DISPLAY=:0
+Environment=PROFILE_DIR=%h/.local/share/barrier/server/barrier@%i/
+ExecStart=/usr/bin/barriers --display ${DISPLAY} --debug ${LOG_LEVEL} --no-daemon --name %H --disable-client-cert-checking --config /home/shw/.config/barrier/barrier.conf --profile-dir ${PROFILE_DIR} --address %i
+Restart=always
+
+[Install]
+WantedBy=default.target
