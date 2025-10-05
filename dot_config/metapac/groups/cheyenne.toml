@@ -13,4 +13,6 @@ arch = [
   "efitools",
   "sbctl",
   "sof-firmware",
+  "debootstrap",
+  "ubuntu-keyring",
 ]
