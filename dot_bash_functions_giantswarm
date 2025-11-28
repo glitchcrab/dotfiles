@@ -1,3 +1,46 @@
+function teleport_kube_login {
+    if [ "$#" -eq 1 ]; then
+        _selected_cluster="${1}"
+    else
+        _selected_cluster=$(tsh kube ls | awk 'NR>1 {print $1}' | fzf)
+    fi
+
+    echo "INF: logging into cluster ${_selected_cluster}"
+    _kconfig_dir=".kube/clusters"
+    _kconfig_file="${_selected_cluster}.yaml"
+    _cluster="${_selected_cluster}"
+    _cluster_context="teleport.giantswarm.io-${_selected_cluster}"
+    KUBECONFIG="${HOME}/${_kconfig_dir}/${_kconfig_file}"
+
+    if [ -f "${KUBECONFIG}" ]; then
+        rm "${KUBECONFIG}"
+    fi
+
+    touch "${KUBECONFIG}"
+    tsh kube login ${_selected_cluster}
+
+    kubectl config set contexts.$(kubectl config current-context).namespace "kube-system" > /dev/null 2>&1
+}
+
+function kubeswitch_delete_context {
+    _context_to_delete=$(switch list-contexts | sed 's#clusters/teleport\.giantswarm\.io-##' | grep -vE 'clusters' | fzf)
+
+    dir="${HOME}/.kube/clusters"
+    file="${dir}/${_context_to_delete}.yaml"
+
+    if [ ! -f "${file}" ]; then
+        echo "ERR: file '${file}' not found" >&2
+        return 1
+    fi
+
+    rm ${file}
+    if [ $? -ne 0 ]; then
+        echo "ERR: could not delete ${file}"
+    else
+        echo "INF: ${file} deleted"
+    fi
+}
+
 function opsctl_login {
     _kconfig_dir=".kube/clusters"
 

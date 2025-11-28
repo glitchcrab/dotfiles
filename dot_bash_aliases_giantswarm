@@ -6,13 +6,15 @@ alias toolbox='echo docker run -it --name wealdy-debug --net=host --privileged -
 alias o='opsctl'
 alias opsk='opsctl create kubeconfig -i $1'
 #alias opsl='opsctl login'
-alias opsl='opsctl_login_with_teleport'
+alias opsl='teleport_kube_login'
 alias opslk='opsctl login --keep context'
 alias opss='opsctl ssh $1'
 alias opso='opsctl_open'
 
 alias kgs='kubectl gs'
 alias kgslogin='gs-login'
+
+alias sclean='kubeswitch_delete_context'
 
 alias gsle='gsctl list endpoints'
 alias gse='gsctl select endpoint $1'
