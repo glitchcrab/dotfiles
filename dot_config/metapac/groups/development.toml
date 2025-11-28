@@ -22,4 +22,5 @@ arch = [
   "sshfs",
   "gopls",
   "git-absorb",
+  "pre-commit",
 ]
