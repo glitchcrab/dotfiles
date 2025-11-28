@@ -77,6 +77,6 @@ arch = [
   "tigervnc",
   "dhcpcd",
   "nodejs",
-  "barrier",
   "nemo-share",
+  "deskflow",
 ]
