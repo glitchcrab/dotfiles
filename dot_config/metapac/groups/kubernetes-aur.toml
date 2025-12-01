@@ -2,7 +2,6 @@ arch = [
   "clusterctl-bin",
   "flux-bin",
   "kind-bin",
-  "stern-bin",
   "kubeswitch-bin",
   "helm-diff",
   "hubble-bin",

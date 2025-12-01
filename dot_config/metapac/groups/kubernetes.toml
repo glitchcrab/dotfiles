@@ -11,4 +11,5 @@ arch = [
   "cfssl",
   "pwru",
   "crane",
+  "stern",
 ]
