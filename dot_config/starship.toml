@@ -2,46 +2,54 @@
 add_newline = false
 
 format = """
-$username\
+$username(bg:#5e81ac fg:#2e3440)\
+[](bg:#81a1c1 fg:#5e81ac)\
 $directory\
-$python\
+[](bg:#88c0d0 fg:#81a1c1)\
 $kubernetes\
+[](bg:#8fbcbb fg:#88c0d0)\
 $git_branch\
-$git_status\
+[](bg:#d9dee9 fg:#8fbcbb)\
+$git_status$git_state\
+[](fg:#d9dee9)\
 $character"""
+
+[username]
+style_user = "fg:#2e3440 bg:#5e81ac"
+style_root = "red bold"
+format = '[ $user ]($style)'
+show_always = true
+
+[directory]
+truncation_length = 1
+style = "fg:#2e3440 bg:#81a1c1"
+read_only_style = "fg:#2e3440 bold bg:#81a1c1"
+format = '[ $path ]($style)[$read_only]($read_only_style)'
+read_only = " "
+
+[kubernetes]
+disabled = false
+format = "[ $symbol$context:$namespace ]($style)"
+symbol = "☸ "
+style = "fg:#2e3440 bg:#88c0d0"
+
+[git_branch]
+format = "[ $symbol$branch(:$remote_branch) ]($style)"
+symbol = " "
+style = "fg:#2e3440 bg:#8fbcbb"
+
+[git_state]
+
+[git_status]
+format = "[ $all_status$ahead_behind ]($style)"
+style = "fg:#2e3440 bg:#d9dee9"
+
+[character]
+success_symbol = "[ ➜](bold green) "
+error_symbol = "[ ✗](bold red) "
 
 [aws]
 disabled = true
 
-[character]
-success_symbol = "[➜](bold green) "
-error_symbol = "[✗](bold red) "
-
-[python]
-symbol = "🐍"
-format = '[${symbol} (\($virtualenv\) )]($style)'
-#detect_extensions = []
-#python_binary = []
-
-[directory]
-truncation_length = 1
-style = "bold bright-green"
-read_only_style = " bold red"
-format = '[$path]($style)[$read_only]($read_only_style) '
-
 [docker_context]
 disabled = true
-
-[git_branch]
-format = "[$symbol$branch]($style) "
-symbol = " "
-
-[kubernetes]
-disabled = false
-format = '[☸ ](bold bright-blue)[$context:$namespace](blue) '
-
-[username]
-style_user = "white bold"
-style_root = "red bold"
-format = '[$user]($style) '
-show_always = true
