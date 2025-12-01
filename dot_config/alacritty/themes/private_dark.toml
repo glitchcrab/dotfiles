@@ -1,58 +1,33 @@
-# Base16 Nord 256 - alacritty color config
-# arcticicestudio
+# nord https://terminalcolors.com/themes/nord/default/
 
-# Default colors
 [colors.primary]
-background = '0x2e3440'
-foreground = '0xe5e9f0'
+foreground = "#d8dee9"
+background = "#2e3440"
 
-# Colors the cursor will use if `custom_cursor_colors` is true
 [colors.cursor]
-text = '0x2e3440'
-cursor = '0xe5e9f0'
+text = "#2e3440"
+cursor = "#d8dee9"
 
-# Normal colors
+[colors.selection]
+text = "#d8dee9"
+background = "#3f4758"
+
 [colors.normal]
-black = '0x2e3440'
-red = '0xbf616a'
-green = '0xa3be8c'
-yellow = '0xebcb8b'
-blue = '0x81a1c1'
-magenta = '0xb48ead'
-cyan = '0x88c0d0'
-white = '0xe5e9f0'
+black = "#3b4252"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#88c0d0"
+white = "#e5e9f0"
 
-# Bright colors
 [colors.bright]
-black = '0x4c566a'
-red = '0xbf616a'
-green = '0xa3be8c'
-yellow = '0xebcb8b'
-blue = '0x81a1c1'
-magenta = '0xb48ead'
-cyan = '0x88c0d0'
-white = '0x8fbcbb'
-
-[[colors.indexed_colors]]
-index = 16
-color = "0xd08770"
-
-[[colors.indexed_colors]]
-index = 17
-color = "0x5e81ac"
-
-[[colors.indexed_colors]]
-index = 18
-color = "0x3b4252"
-
-[[colors.indexed_colors]]
-index = 19
-color = "0x434c5e"
-
-[[colors.indexed_colors]]
-index = 20
-color = "0xd8dee9"
-
-[[colors.indexed_colors]]
-index = 21
-color = "0xeceff4"
+black = "#4c566a"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#8fbcbb"
+white = "#eceff4"
