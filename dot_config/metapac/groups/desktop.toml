@@ -68,6 +68,7 @@ arch = [
   "xdotool",
   "papirus-icon-theme",
   "ttf-fira-code",
+  "ttf-firacode-nerd",
   "yubikey-manager-qt",
   "yubikey-manager",
   "yubikey-personalization-gui",
