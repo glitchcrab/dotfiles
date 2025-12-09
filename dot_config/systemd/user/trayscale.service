@@ -1,0 +1,12 @@
+[Unit]
+Description=Tailscale system tray icon
+Requires=snixembed.service
+After=snixembed.service
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/trayscale --hide-window
+
+[Install]
+WantedBy=default.target

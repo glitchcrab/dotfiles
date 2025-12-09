@@ -80,4 +80,5 @@ arch = [
   "nodejs",
   "nemo-share",
   "deskflow",
+  "snixembed",
 ]

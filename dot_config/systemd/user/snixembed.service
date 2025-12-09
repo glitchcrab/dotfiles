@@ -1,0 +1,10 @@
+[Unit]
+Description=SNI Tray Icon Embedder for Polybar
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/snixembed
+
+[Install]
+WantedBy=default.target

@@ -25,6 +25,9 @@ while pgrep -u $UID -x polybar >/dev/null; do
 done
 
 if type "xrandr" > /dev/null; then
+    if ! systemctl --user is-active --quiet snixembed.service; then
+        systemctl --user start snixembed.service
+    fi
     for display in $(xrandr | awk '/ connected/ {print $1}'); do
         systemctl --user start polybar@${display}
     done
