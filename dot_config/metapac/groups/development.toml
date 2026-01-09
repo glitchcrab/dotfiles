@@ -23,4 +23,5 @@ arch = [
   "gopls",
   "git-absorb",
   "pre-commit",
+  "woodpecker-cli",
 ]
