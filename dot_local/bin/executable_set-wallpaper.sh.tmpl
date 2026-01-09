@@ -1,28 +1,22 @@
 #!/bin/bash
+set -euo pipefail
 
-MONCOUNT=`xrandr | grep connected | grep -v disconnected | wc -l`
-#BG_DIR=$HOME/Dropbox/Wallpaper/1920x1200
-{{- if eq .chezmoi.hostname "phoenix" }}
-BG_DIR=$HOME/Documents/nextcloud/images/Wallpaper/1920x1200
-{{- else if or (eq .chezmoi.hostname "cheyenne") (eq .chezmoi.hostname "olympia") }}
-BG_DIR=${HOME}/Documents/images/wallpapers
-{{- end }}
+BG_DIR="${HOME}/Documents/images/wallpapers"
 
-# ensure array is empty
-unset files
+# Count connected monitors
+MONCOUNT=$(xrandr --query | grep -w "connected" | wc -l)
 
-i=0
-while read line ; do files[ $i ]="$line" ; (( i++ )) ; done < <(find $BG_DIR/ -type f \( -iname \*.jpg -o -iname \*.png \) | shuf -n $MONCOUNT)
+# Sanity check
+(( MONCOUNT > 0 )) || exit 0
 
-if [ $MONCOUNT == "1" ]; then
-    feh --bg-fill ${files[0]} /dev/null 2>&1
-elif [ $MONCOUNT == "2" ]; then
-    feh --bg-fill ${files[0]} feh --bg-fill ${files[1]} /dev/null 2>&1
-elif [ $MONCOUNT == "3" ]; then
-    feh --bg-fill ${files[0]} feh --bg-fill ${files[1]} feh --bg-fill ${files[2]} > /dev/null 2>&1
-fi
+# Read random images into an array
+mapfile -t files < <(
+  find "$BG_DIR" -type f \( -iname '*.jpg' -o -iname '*.png' \) \
+  | shuf -n "$MONCOUNT"
+)
 
-# clean up afer execution
-unset files
+# Defensive check: do we actually have enough images?
+(( ${#files[@]} == MONCOUNT )) || exit 1
 
-exit
+# Apply wallpapers (one per monitor, order matters)
+feh --no-fehbg --bg-fill "${files[@]}" >/dev/null 2>&1
