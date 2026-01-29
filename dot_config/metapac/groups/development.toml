@@ -18,7 +18,6 @@ arch = [
   "glow",
   "difftastic",
   "hugo",
-  "git-cliff",
   "sshfs",
   "gopls",
   "git-absorb",
