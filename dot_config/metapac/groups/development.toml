@@ -24,4 +24,5 @@ arch = [
   "git-absorb",
   "pre-commit",
   "woodpecker-cli",
+  "claude-code",
 ]
