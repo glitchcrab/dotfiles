@@ -24,4 +24,5 @@ arch = [
   "pre-commit",
   "woodpecker-cli",
   "claude-code",
+  "bubblewrap",
 ]
