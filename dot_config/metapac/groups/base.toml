@@ -95,4 +95,5 @@ arch = [
   "bind",
   "openssl-1.1",
   "chezmoi",
+  "gptfdisk",
 ]
