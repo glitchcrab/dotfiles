@@ -1,4 +1,5 @@
 arch = [
   "efitools",
   "sbctl",
+  "woodpecker-cli",
 ]
