@@ -6,6 +6,7 @@
     gpgsign = false
 [push]
     default = simple
+    autoSetupRemote = true
 [http "https://gopkg.in"]
     followRedirects = true
 [help]
