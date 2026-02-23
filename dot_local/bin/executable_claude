@@ -4,6 +4,7 @@
 CURRENT_DIR_PATH="${PWD##}"
 CURRENT_DIR_NAME="${PWD##*/}"
 BASE_DIR="${HOME}/temp/bubblewrap"
+_UID=$(id -u)
 
 bwrap \
     --ro-bind /usr /usr \
@@ -13,13 +14,15 @@ bwrap \
     --ro-bind /etc/resolv.conf /etc/resolv.conf \
     --ro-bind /etc/hosts /etc/hosts \
     --ro-bind /etc/ssl /etc/ssl \
-    # required for Arch's invocation of Claude
+    --ro-bind /etc/ca-certificates /etc/ca-certificates \
+    --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates \
     --ro-bind /opt/claude-code /opt/claude-code \
-    # let Claude access its config
     --bind "${HOME}/.claude" "${HOME}/.claude" \
     --bind "${HOME}/.claude.json" "${HOME}/.claude.json" \
-    # required for the vscode plugin to work
     --bind "${HOME}/.vscode/" "${HOME}/.vscode/" \
+    --bind $XDG_RUNTIME_DIR/podman/podman.sock /run/podman.sock \
+    --setenv CONTAINER_HOST unix:///run/podman.sock \
+    --bind "/run/user/${_UID}/libpod" "/run/user/${_UID}/libpod" \
     --tmpfs /tmp \
     --proc /proc \
     --dev /dev \
@@ -28,6 +31,4 @@ bwrap \
     --die-with-parent \
     --bind "${CURRENT_DIR_PATH}" "${BASE_DIR}/${CURRENT_DIR_NAME}" \
     --chdir "${BASE_DIR}/${CURRENT_DIR_NAME}" \
-    # start Claude and pass all arguments through
-    /usr/bin/claude "$@"
-
+    /usr/bin/claude "$@" # start Claude and pass all arguments through
