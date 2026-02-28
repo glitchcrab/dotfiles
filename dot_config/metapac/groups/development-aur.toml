@@ -6,5 +6,4 @@ arch = [
   "yj-bin",
   "visual-studio-code-bin",
   "golangci-lint-bin",
-  "cursor-bin",
 ]
