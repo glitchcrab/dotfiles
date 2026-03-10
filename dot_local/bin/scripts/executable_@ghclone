@@ -1,0 +1,17 @@
+ #!/usr/bin/env bash
+set -e
+set -u
+set -o pipefail
+
+# if $1 is not empty, use it as the search term for fzf
+if [[ -n "$1" ]]; then
+    REPO="giantswarm/${1}"
+else
+    REPO=$(gh repo list giantswarm --no-archived --limit 1000 | awk '{print $1}' | fzf)
+fi
+
+cd ~/code/giantswarm/repos
+gh repo clone "$REPO"
+
+REPONAME=$(basename "$REPO")
+cd "$REPONAME" || return
