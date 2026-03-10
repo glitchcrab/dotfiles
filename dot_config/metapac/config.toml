@@ -33,6 +33,7 @@ hostname_groups_enabled = true
     "kubernetes",
     "kubernetes-aur",
     "laptop",
+    "llm-tooling-aur",
     "wireless",
     "cheyenne",
     "cheyenne-aur",
@@ -51,6 +52,7 @@ hostname_groups_enabled = true
     "kubernetes",
     "kubernetes-aur",
     "laptop",
+    "llm-tooling-aur",
     "wireless",
     "olympia",
 ]
