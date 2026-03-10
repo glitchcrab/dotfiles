@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+set -u
+set -o pipefail
+
+export DISPLAY=:0
+
+pwd | tr -d '\n' | xclip -loops 1
