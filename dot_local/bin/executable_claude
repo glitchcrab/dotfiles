@@ -23,6 +23,8 @@ bwrap \
     --bind $XDG_RUNTIME_DIR/podman/podman.sock /run/podman.sock \
     --setenv CONTAINER_HOST unix:///run/podman.sock \
     --bind "/run/user/${_UID}/libpod" "/run/user/${_UID}/libpod" \
+    --bind "${HOME}/.local/share/rtk/history.db" "${HOME}/.local/share/rtk/history.db" \
+    --bind "${HOME}/.config/rtk/config.toml" "${HOME}/.config/rtk/config.toml" \
     --tmpfs /tmp \
     --proc /proc \
     --dev /dev \
