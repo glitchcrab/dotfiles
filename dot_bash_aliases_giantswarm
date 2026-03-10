@@ -29,10 +29,24 @@ alias add-gs-sso-key="keychain --agents ssh --eval giantswarm-sso-ed25519"
 
 alias ghprr="gh pr create -a @me -r giantswarm/team-rocket"
 
+alias cranegs='crane_gs'
+
 alias tshssh='tshfzf'
 
 tshfzf() {
   tsh ls | fzf | awk '{print $1}' | cut -d'.' -f1 | xargs -o -I {} tsh ssh root@node={}
+}
+
+crane_gs() {
+  if [[  $1 == "i" ]]; then
+    crane ls gsoci.azurecr.io/giantswarm/$2
+  elif [[  $1 == "c" ]]; then
+    crane ls gsoci.azurecr.io/charts/giantswarm/$2
+  else
+    echo "Usage: cranegs [i|e]"
+    echo "i: List images in the 'i' repository"
+    echo "e: List images in the 'e' repository"
+  fi
 }
 
 opsctl_open() {
