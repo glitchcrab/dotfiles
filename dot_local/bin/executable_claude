@@ -6,6 +6,12 @@ CURRENT_DIR_NAME="${PWD##*/}"
 BASE_DIR="${HOME}/temp/bubblewrap"
 _UID=$(id -u)
 
+# ensure podman is alive
+podman ps > /dev/null 2>&1
+
+# ensure base bubblewrap dir exists
+mkdir -p ${BASE_DIR} > /dev/null 2>&1 || true
+
 bwrap \
     --ro-bind /usr /usr \
     --ro-bind /lib /lib \
@@ -20,7 +26,7 @@ bwrap \
     --bind "${HOME}/.claude" "${HOME}/.claude" \
     --bind "${HOME}/.claude.json" "${HOME}/.claude.json" \
     --bind "${HOME}/.vscode/" "${HOME}/.vscode/" \
-    --bind $XDG_RUNTIME_DIR/podman/podman.sock /run/podman.sock \
+    --bind ${XDG_RUNTIME_DIR}/podman/podman.sock /run/podman.sock \
     --setenv CONTAINER_HOST unix:///run/podman.sock \
     --bind "/run/user/${_UID}/libpod" "/run/user/${_UID}/libpod" \
     --bind "${HOME}/.local/share/rtk/history.db" "${HOME}/.local/share/rtk/history.db" \
