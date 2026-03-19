@@ -23,6 +23,7 @@
     sw = !git switch $(git branch -a --format '%(refname:short)' | sed 's~origin/~~' | sort | uniq | fzf)
     home = !gh home
     copr = !@git-add-pr-worktree
+    wta = !@git-add-worktree
     wtl = worktree list
     wtr = worktree remove
 [diff]

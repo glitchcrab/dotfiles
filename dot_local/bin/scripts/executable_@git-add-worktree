@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <branch-name>"
+    exit 1
+fi
+
+repo=${PWD##*/}
+branch=${1}
+escapedBranch=$(echo "${branch//\//-}")
+
+git worktree add "../_worktrees/${repo}/${escapedBranch}" -b "${branch}"
+
+echo "[INFO] Worktree available at: ../_worktrees/${repo}/${escapedBranch}"
