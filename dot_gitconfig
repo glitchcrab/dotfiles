@@ -22,6 +22,9 @@
     recent-branches = !git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short) %(objectname:short) %(committerdate:format:%F)' | column -t | sort -k3 | head -n 10
     sw = !git switch $(git branch -a --format '%(refname:short)' | sed 's~origin/~~' | sort | uniq | fzf)
     home = !gh home
+    copr = !@git-add-pr-worktree
+    wtl = worktree list
+    wtr = worktree remove
 [diff]
     tool = meld
 [difftool]
