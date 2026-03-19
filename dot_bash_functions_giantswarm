@@ -155,3 +155,20 @@ function access {
         fi
     fi
 }
+
+function flux-suspend() {
+    if [ "$#" -eq 3 ]; then
+        kubectl label $1 $2 -n $3 kustomize.toolkit.fluxcd.io/reconcile=disabled
+    else
+        echo "Usage: $0 <type> <name> <namespace>"
+    fi
+}
+
+
+function flux-resume() {
+    if [ "$#" -eq 3 ]; then
+        kubectl label $1 $2 -n $3 kustomize.toolkit.fluxcd.io/reconcile-
+    else
+        echo "Usage: $0 <type> <name> <namespace>"
+    fi
+}
