@@ -44,8 +44,8 @@ crane_gs() {
     crane ls gsoci.azurecr.io/charts/giantswarm/$2
   else
     echo "Usage: cranegs [i|e]"
-    echo "i: List images in the 'i' repository"
-    echo "e: List images in the 'e' repository"
+    echo "i: List image tags"
+    echo "c: List chart versions"
   fi
 }
 
