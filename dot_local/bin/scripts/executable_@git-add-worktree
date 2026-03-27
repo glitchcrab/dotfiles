@@ -9,10 +9,13 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+export DISPLAY=:0
+
 repo=${PWD##*/}
 branch=${1}
 escapedBranch=$(echo "${branch//\//-}")
 
 git worktree add "../_worktrees/${repo}/${escapedBranch}" -b "${branch}"
 
+xclip -loops 1 -selection clipboard <<< "../_worktrees/${repo}/${escapedBranch}"
 echo "[INFO] Worktree available at: ../_worktrees/${repo}/${escapedBranch}"
