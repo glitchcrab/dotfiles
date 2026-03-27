@@ -5,4 +5,4 @@ set -o pipefail
 
 export DISPLAY=:0
 
-pwd | tr -d '\n' | xclip -loops 1
+pwd | tr -d '\n' | xclip -loops 1 -selection clipboard
