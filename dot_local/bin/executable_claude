@@ -23,6 +23,7 @@ bwrap \
     --ro-bind /etc/ca-certificates /etc/ca-certificates \
     --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates \
     --ro-bind /opt/claude-code /opt/claude-code \
+    --bind "/run/user/${_UID}/bus" "/run/user/${_UID}/bus" \
     --bind "${HOME}/.claude" "${HOME}/.claude" \
     --bind "${HOME}/.claude.json" "${HOME}/.claude.json" \
     --bind "${HOME}/.vscode/" "${HOME}/.vscode/" \
