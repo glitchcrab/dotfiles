@@ -24,6 +24,7 @@
     home = !gh home
     copr = !@git-add-pr-worktree
     wta = !@git-add-worktree
+    wtc = !@git-add-worktree
     wtl = worktree list
     wtr = worktree remove
 [diff]
