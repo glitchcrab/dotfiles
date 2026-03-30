@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+export DISPLAY=:0
+
+repo=${PWD##*/}
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+worktree_path() {
+    local branch=$1
+    local escaped=${branch//\//-}
+    echo "../_worktrees/${repo}/${escaped}"
+}
+
+pick_action() {
+    printf '%s\n' "add" "add-pr" "list" "remove" "cd" \
+        | fzf --prompt="worktree action > " --height=~10 --layout=reverse
+}
+
+pick_worktree() {
+    local prompt=${1:-"worktree > "}
+    git worktree list --porcelain \
+        | awk '/^worktree/ { path=$2 } /^branch/ { sub("refs/heads/","", $2); printf "%-30s %s\n", $2, path }' \
+        | fzf --prompt="${prompt}" --height=~15 --layout=reverse \
+        | awk '{ print $2 }'
+}
+
+# ---------------------------------------------------------------------------
+# Actions
+# ---------------------------------------------------------------------------
+
+cmd_add() {
+    local branch=${1:-}
+    if [[ -z $branch ]]; then
+        read -rp "Branch name: " branch
+        [[ -z $branch ]] && { echo "Aborted."; exit 1; }
+    fi
+    local path
+    path=$(worktree_path "$branch")
+    git worktree add "$path" -b "$branch"
+    xclip -loops 1 -selection clipboard <<< "$path"
+    echo "[INFO] Worktree available at: ${path} (copied to clipboard)"
+}
+
+cmd_add_pr() {
+    local pr=${1:-}
+    if [[ -z $pr ]]; then
+        read -rp "PR number: " pr
+        [[ -z $pr ]] && { echo "Aborted."; exit 1; }
+    fi
+    local remote=${2:-origin}
+    local branch
+    branch=$(gh pr view "${pr}" --json headRefName -q .headRefName)
+    local path
+    path=$(worktree_path "$branch")
+    git fetch "${remote}" "${branch}"
+    git worktree add "$path" "${branch}"
+    echo "[INFO] Created worktree for PR #${pr}: ${branch}"
+    echo "[INFO] Worktree available at: ${path}"
+}
+
+cmd_list() {
+    git worktree list
+}
+
+cmd_remove() {
+    local path=${1:-}
+    if [[ -z $path ]]; then
+        path=$(pick_worktree "remove worktree > ")
+        [[ -z $path ]] && { echo "Aborted."; exit 1; }
+    fi
+    git worktree remove "$path"
+    echo "[INFO] Removed worktree at: ${path}"
+}
+
+cmd_cd() {
+    local path=${1:-}
+    if [[ -z $path ]]; then
+        path=$(pick_worktree "cd to worktree > ")
+        [[ -z $path ]] && { echo "Aborted."; exit 1; }
+    fi
+    echo "$path"
+}
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+if [[ $# -eq 0 ]]; then
+    action=$(pick_action)
+    [[ -z $action ]] && { echo "Aborted."; exit 1; }
+else
+    action=$1
+    shift
+fi
+
+case $action in
+    add)     cmd_add "$@" ;;
+    add-pr)  cmd_add_pr "$@" ;;
+    list)    cmd_list ;;
+    remove)  cmd_remove "$@" ;;
+    cd)      cmd_cd "$@" ;;
+    *)       echo "Unknown action: ${action}"; exit 1 ;;
+esac
+
