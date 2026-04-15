@@ -24,6 +24,12 @@ Plug 'cocopon/iceberg.vim'
 Plug 'github/copilot.vim'
 call plug#end()
 
+set backup
+if !isdirectory($HOME."/.vim/backups")
+    silent! execute "!mkdir -p ~/.vim/backups"
+endif
+set backupdir=~/.vim/backups
+
 " yaml config
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal tabstop=2 softtabstop=-1 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
