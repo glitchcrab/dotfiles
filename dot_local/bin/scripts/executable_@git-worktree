@@ -19,7 +19,7 @@ worktree_path() {
 }
 
 pick_action() {
-    printf '%s\n' "add" "add-pr" "list" "remove" "cd" \
+    printf '%s\n' "cd" "new-branch" "clone-pr" "remove" "list" \
         | fzf --prompt="worktree action > " --height=~10 --layout=reverse
 }
 
@@ -101,8 +101,8 @@ else
 fi
 
 case $action in
-    add)     cmd_add "$@" ;;
-    add-pr)  cmd_add_pr "$@" ;;
+    new-branch)     cmd_add "$@" ;;
+    clone-pr)  cmd_add_pr "$@" ;;
     list)    cmd_list ;;
     remove)  cmd_remove "$@" ;;
     cd)      cmd_cd "$@" ;;
