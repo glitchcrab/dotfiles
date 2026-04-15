@@ -230,14 +230,3 @@ pkg_file_diff() {
         tar xf $pkgFilePath -O ${file#/} | sudo delta $file -
     fi
 }
-
-# supporting shell command for @git-worktree script
-wt() {
-    local target
-    target=$(git-wt "$@")
-    if [[ -d $target ]]; then
-        cd "$target"
-    else
-        echo "$target"
-    fi
-}
