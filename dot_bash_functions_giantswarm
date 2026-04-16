@@ -172,3 +172,11 @@ function flux-resume() {
         echo "Usage: $0 <type> <name> <namespace>"
     fi
 }
+
+tshfzf() {
+    if [ "$#" -eq 1 ]; then
+        tsh ssh root@node=$1
+    else
+        tsh ls | fzf | awk '{print $1}' | cut -d'.' -f1 | xargs -o -I {} tsh ssh root@node={}
+    fi
+}

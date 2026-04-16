@@ -33,10 +33,6 @@ alias cranegs='crane_gs'
 
 alias tshssh='tshfzf'
 
-tshfzf() {
-  tsh ls | fzf | awk '{print $1}' | cut -d'.' -f1 | xargs -o -I {} tsh ssh root@node={}
-}
-
 crane_gs() {
   if [[  $1 == "i" ]]; then
     crane ls gsoci.azurecr.io/giantswarm/$2
