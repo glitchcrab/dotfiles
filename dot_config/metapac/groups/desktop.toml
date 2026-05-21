@@ -81,4 +81,6 @@ arch = [
   "nemo-share",
   "deskflow",
   "snixembed",
+  "darkman",
+  "geoclue",
 ]
