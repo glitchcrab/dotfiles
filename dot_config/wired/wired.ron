@@ -1,0 +1,359 @@
+(
+	max_notifications: 5,
+	timeout: 5000,
+	poll_interval: 6,
+	replacing_enabled: true,
+	replacing_resets_timeout: true,
+	shortcuts: (
+		notification_interact: 1,
+		notification_close: 2,
+		notification_closeall: 3,
+		notification_pause: 1,
+	),
+	history_length: 20,
+	min_window_width: 24,
+	min_window_height: 24,
+	layout_blocks: [
+
+		// ═══════════════════════════════════════════════════════════
+		//  General notifications  (top-right corner)
+		//  Excluded for notifications tagged with "indicator".
+		// ═══════════════════════════════════════════════════════════
+
+		(
+			name: "root",
+			parent: "",
+			hook: (parent_anchor: TR, self_anchor: TR),
+			offset: (x: -20, y: 40),
+			render_anti_criteria: [Tag("indicator")],
+			params: NotificationBlock((
+				monitor: 0,
+				border_width: 2.0,
+				border_rounding: 4.0,
+				gap: (x: 0.0, y: 8.0),
+				// Nord: Polar Night (darkest)
+				background_color: (hex: "#2E3440"),
+				// Nord: Frost (cyan)
+				border_color: (hex: "#88C0D0"),
+				// Nord: Polar Night 4 (muted)
+				border_color_low: (hex: "#4C566A"),
+				// Nord: Aurora Red
+				border_color_critical: (hex: "#BF616A"),
+				notification_hook: (parent_anchor: BL, self_anchor: TL),
+			)),
+		),
+		(
+			name: "summary",
+			parent: "root",
+			offset: (x: 0, y: 0),
+			hook: (parent_anchor: TR, self_anchor: TR),
+			params: TextBlock((
+				text: "%s",
+				padding: (left: 16.0, right: 16.0, top: 14.0, bottom: 10.0),
+				font: "Noto Sans Bold 9",
+				// Nord: Snow Storm (brightest)
+				color: Color(hex: "#ECEFF4"),
+				dimensions: (
+					width: (min: 400, max: 400),
+					height: (min: 0, max: 300),
+				),
+				dimensions_image_hint: (
+					width: (min: 600, max: 600),
+					height: (min: 0, max: 300),
+				),
+			)),
+		),
+		(
+			name: "image",
+			parent: "summary",
+			hook: (parent_anchor: TL, self_anchor: TR),
+			offset: (x: 0, y: 0),
+			render_criteria: [HintImage],
+			params: ImageBlock((
+				image_type: Hint,
+				padding: (left: 12.0, right: -12.0, top: 10.0, bottom: 10.0),
+				rounding: 4.0,
+				scale_width: 80,
+				scale_height: 80,
+				filter_mode: Lanczos3,
+			)),
+		),
+		(
+			name: "body",
+			parent: "summary",
+			offset: (x: 0, y: 0),
+			hook: (parent_anchor: BL, self_anchor: TL),
+			render_criteria: [Body],
+			render_anti_criteria: [AppName("progress")],
+			params: ScrollingTextBlock((
+				text: "%b",
+				padding: (left: 16.0, right: 16.0, top: -4.0, bottom: 14.0),
+				font: "Noto Sans 9",
+				// Nord: Snow Storm (slightly dimmer than summary)
+				color: (hex: "#D8DEE9"),
+				scroll_speed: 0.1,
+				lhs_dist: 12.0,
+				rhs_dist: 12.0,
+				scroll_t: 1.0,
+				width: (min: 400, max: 400),
+				width_image_hint: (min: 580, max: 580),
+			)),
+		),
+		// Progress bar shown when there is no body text
+		(
+			name: "progress",
+			parent: "summary",
+			offset: (x: 0, y: 0),
+			hook: (parent_anchor: BL, self_anchor: TL),
+			render_criteria: [Progress],
+			render_anti_criteria: [Body],
+			params: ProgressBlock((
+				padding: (left: 16.0, right: 16.0, top: 6.0, bottom: 14.0),
+				border_width: 0.0,
+				border_rounding: 4.0,
+				fill_rounding: 4.0,
+				// Nord: Polar Night (matches background)
+				border_color: (hex: "#2E3440"),
+				// Nord: Polar Night 4 (track)
+				background_color: (hex: "#4C566A"),
+				// Nord: Frost (fill)
+				fill_color: (hex: "#88C0D0"),
+				width: 380.0,
+				height: 8.0,
+			)),
+		),
+		// Progress bar shown alongside body text (muted fill)
+		(
+			name: "progress_muted",
+			parent: "body",
+			offset: (x: 0, y: 0),
+			hook: (parent_anchor: BL, self_anchor: TL),
+			render_criteria: [And([Progress, Body])],
+			params: ProgressBlock((
+				padding: (left: 16.0, right: 16.0, top: 6.0, bottom: 14.0),
+				border_width: 0.0,
+				border_rounding: 4.0,
+				fill_rounding: 4.0,
+				// Nord: Polar Night (matches background)
+				border_color: (hex: "#2E3440"),
+				// Nord: Polar Night 4 (track)
+				background_color: (hex: "#4C566A"),
+				// Nord: Frost (lighter, muted variant)
+				fill_color: (hex: "#81A1C1"),
+				width: 380.0,
+				height: 8.0,
+			)),
+		),
+
+		// ═══════════════════════════════════════════════════════════
+		//  Indicator overlay  (centered on screen)
+		//
+		//  Send with hints:
+		//    x-wired-tag:indicator   — routes here instead of corner
+		//    x-wired-note:volume     — uses green progress bar
+		//    x-wired-note:brightness — uses yellow progress bar
+		//
+		//  Example:
+		//    notify-send \
+		//      -h string:x-wired-tag:indicator \
+		//      -h string:x-wired-note:volume \
+		//      -h int:value:75 \
+		//      -i audio-volume-high \
+		//      "Volume" ""
+		// ═══════════════════════════════════════════════════════════
+
+		(
+			name: "indicator_root",
+			parent: "",
+			hook: (parent_anchor: MM, self_anchor: MM),
+			offset: (x: 0, y: 0),
+			render_criteria: [Tag("indicator")],
+			params: NotificationBlock((
+				monitor: 0,
+				border_width: 2.0,
+				border_rounding: 8.0,
+				gap: (x: 0.0, y: 0.0),
+				// Nord: Polar Night (darkest)
+				background_color: (hex: "#2E3440"),
+				// Nord: Polar Night 4 (subtle border)
+				border_color: (hex: "#4C566A"),
+				border_color_low: (hex: "#4C566A"),
+				// Nord: Aurora Red
+				border_color_critical: (hex: "#BF616A"),
+				notification_hook: (parent_anchor: MM, self_anchor: MM),
+			)),
+		),
+		// Invisible block that fixes the overlay dimensions
+		(
+			name: "indicator_size",
+			parent: "indicator_root",
+			hook: (parent_anchor: TL, self_anchor: TL),
+			offset: (x: 0, y: 0),
+			params: TextBlock((
+				text: "",
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+				font: "Noto Sans 1",
+				color: (hex: "#2E3440"),
+				dimensions: (
+					width: (min: 320, max: 320),
+					height: (min: 320, max: 320),
+				),
+			)),
+		),
+		// Title / summary centred at the top
+		(
+			name: "indicator_summary",
+			parent: "indicator_size",
+			hook: (parent_anchor: TM, self_anchor: TM),
+			offset: (x: 0, y: 16),
+			params: TextBlock((
+				text: "%s",
+				align: Center,
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+				font: "Noto Sans Bold 10",
+				// Nord: Snow Storm
+				color: Color(hex: "#ECEFF4"),
+				dimensions: (
+					width: (min: 280, max: 280),
+					height: (min: 28, max: 28),
+				),
+			)),
+		),
+		// Large icon image (album art, speaker icon, etc.)
+		(
+			name: "indicator_hint",
+			parent: "indicator_summary",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 20),
+			render_criteria: [HintImage],
+			params: ImageBlock((
+				image_type: Hint,
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+				rounding: 8.0,
+				scale_width: 128,
+				scale_height: 128,
+				filter_mode: Lanczos3,
+			)),
+		),
+		// ── Volume (green) ────────────────────────────────────────
+		(
+			name: "indicator_volume_text",
+			parent: "indicator_hint",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 16),
+			render_criteria: [And([Progress, Note("volume")])],
+			params: TextBlock((
+				text: "%p%",
+				align: Center,
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 8.0),
+				font: "Noto Sans Bold 11",
+				// Nord: Snow Storm
+				color: Color(hex: "#ECEFF4"),
+				dimensions: (
+					width: (min: 60, max: 60),
+					height: (min: 24, max: 24),
+				),
+			)),
+		),
+		(
+			name: "indicator_volume_bar",
+			parent: "indicator_volume_text",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 0),
+			render_criteria: [And([Progress, Note("volume")])],
+			params: ProgressBlock((
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+				border_width: 0.0,
+				border_rounding: 6.0,
+				fill_rounding: 6.0,
+				border_color: (hex: "#2E3440"),
+				// Nord: Polar Night 2 (track)
+				background_color: (hex: "#3B4252"),
+				// Nord: Aurora Green
+				fill_color: (hex: "#A3BE8C"),
+				width: 240.0,
+				height: 12.0,
+			)),
+		),
+		// ── Brightness (yellow) ───────────────────────────────────
+		(
+			name: "indicator_brightness_text",
+			parent: "indicator_hint",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 16),
+			render_criteria: [And([Progress, Note("brightness")])],
+			params: TextBlock((
+				text: "%p%",
+				align: Center,
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 8.0),
+				font: "Noto Sans Bold 11",
+				// Nord: Snow Storm
+				color: Color(hex: "#ECEFF4"),
+				dimensions: (
+					width: (min: 60, max: 60),
+					height: (min: 24, max: 24),
+				),
+			)),
+		),
+		(
+			name: "indicator_brightness_bar",
+			parent: "indicator_brightness_text",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 0),
+			render_criteria: [And([Progress, Note("brightness")])],
+			params: ProgressBlock((
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+				border_width: 0.0,
+				border_rounding: 6.0,
+				fill_rounding: 6.0,
+				border_color: (hex: "#2E3440"),
+				// Nord: Polar Night 2 (track)
+				background_color: (hex: "#3B4252"),
+				// Nord: Aurora Yellow
+				fill_color: (hex: "#EBCB8B"),
+				width: 240.0,
+				height: 12.0,
+			)),
+		),
+		// ── Generic progress (cyan/frost) ─────────────────────────
+		(
+			name: "indicator_generic_text",
+			parent: "indicator_hint",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 16),
+			render_criteria: [And([Progress, Not(Note("volume")), Not(Note("brightness"))])],
+			params: TextBlock((
+				text: "%p%",
+				align: Center,
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 8.0),
+				font: "Noto Sans Bold 11",
+				// Nord: Snow Storm
+				color: Color(hex: "#ECEFF4"),
+				dimensions: (
+					width: (min: 60, max: 60),
+					height: (min: 24, max: 24),
+				),
+			)),
+		),
+		(
+			name: "indicator_generic_bar",
+			parent: "indicator_generic_text",
+			hook: (parent_anchor: BM, self_anchor: TM),
+			offset: (x: 0, y: 0),
+			render_criteria: [And([Progress, Not(Note("volume")), Not(Note("brightness"))])],
+			params: ProgressBlock((
+				padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+				border_width: 0.0,
+				border_rounding: 6.0,
+				fill_rounding: 6.0,
+				border_color: (hex: "#2E3440"),
+				// Nord: Polar Night 2 (track)
+				background_color: (hex: "#3B4252"),
+				// Nord: Frost (cyan)
+				fill_color: (hex: "#88C0D0"),
+				width: 240.0,
+				height: 12.0,
+			)),
+		),
+	],
+)
