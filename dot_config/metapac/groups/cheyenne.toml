@@ -8,8 +8,6 @@ arch = [
   "pam_mount",
   "yubikey-full-disk-encryption",
   "lastpass-cli",
-  "tekton-cli",
-  "azure-cli",
   "efitools",
   "sbctl",
   "sof-firmware",
