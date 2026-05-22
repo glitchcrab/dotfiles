@@ -4,22 +4,6 @@ disabled_backends = ["apt", "brew", "cargo", "dnf", "flatpak", "pipx", "snap", "
 hostname_groups_enabled = true
 
 [hostname_groups]
-'phoenix.analbeard.com' = [
-    "audio",
-    "audio-aur",
-    "base",
-    "base-aur",
-    "desktop",
-    "desktop-aur",
-    "development",
-    "development-aur",
-    "display",
-    "kubernetes",
-    "kubernetes-aur",
-    "laptop",
-    "wireless",
-    "phoenix"
-]
 'cheyenne.analbeard.com' = [
     "audio",
     "audio-aur",
