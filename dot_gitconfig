@@ -60,6 +60,7 @@
 
 [delta]
     features = decorations
+    syntax-theme = GitHub # auto-switched by darkman
 
 [delta "interactive"]
     keep-plus-minus-markers = false
