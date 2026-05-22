@@ -1,7 +1,6 @@
 arch = [
   "staticcheck",
   "act",
-  "ansible",
   "ansible-lint",
   "automake",
   "docker",
@@ -17,7 +16,6 @@ arch = [
   "gron",
   "glow",
   "difftastic",
-  "hugo",
   "sshfs",
   "gopls",
   "git-absorb",
