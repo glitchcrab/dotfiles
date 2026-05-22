@@ -1,0 +1,14 @@
+---
+# deployment-specific settings
+image: "glitchcrab/ubuntu-debug:latest"
+networkpolicy: true
+non-root: true
+pod-args: "24h"
+pod-command: "sleep"
+pod-groupid: 1000
+pod-userid: 1000
+privilege-escalation: false
+privileged: false
+
+# global settings
+name: "debug"
