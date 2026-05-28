@@ -12,7 +12,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'hashivim/vim-terraform'
@@ -22,6 +21,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'nordtheme/vim', {'as': 'nordtheme'}
 Plug 'cocopon/iceberg.vim'
 Plug 'github/copilot.vim'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 set backup
@@ -36,6 +37,20 @@ autocmd FileType yaml setlocal tabstop=2 softtabstop=-1 shiftwidth=2 expandtab i
 
 :filetype plugin on
 :syntax on
+
+" open nerdtree on startup
+autocmd VimEnter * NERDTree | wincmd p
+" toggle focus between nerdtree and the last focused window with <leader>n
+nnoremap <C-n> :call NERDTreeToggleFocus()<CR>
+function! NERDTreeToggleFocus()
+    if &filetype ==# 'nerdtree'
+        wincmd p
+    else
+        NERDTreeFocus
+    endif
+endfunction
+" quit vim entirely when the last file is closed
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -77,11 +92,6 @@ let g:terraform_fmt_on_save=1
 
 " add diff for unsaved changes
 command DiffUnsaved execute 'w !git diff --no-index % -'
-
-" launch NERDTree with Ctrl+n
-map <C-n> :NERDTreeToggle<CR>
-" close NERDTree after opening a file
-let NERDTreeQuitOnOpen=1
 
 " VISUAL CONFIGURATION
 
