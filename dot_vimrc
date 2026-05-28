@@ -9,9 +9,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'tpope/vim-fugitive'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'hashivim/vim-terraform'
@@ -35,12 +34,19 @@ set backupdir=~/.vim/backups
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal tabstop=2 softtabstop=-1 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
 
-:filetype plugin on
-:syntax on
+filetype plugin on
+syntax on
 
 " open nerdtree on startup
-autocmd VimEnter * NERDTree | wincmd p
-" toggle focus between nerdtree and the last focused window with <leader>n
+function! OpenNERDTree()
+    if argc() == 1 && argv(0) =~# '\.git[\/]'
+        return
+    endif
+    NERDTree
+    wincmd p
+endfunction
+autocmd VimEnter * call OpenNERDTree()
+" toggle focus between nerdtree and the last focused window with ctrl+n
 nnoremap <C-n> :call NERDTreeToggleFocus()<CR>
 function! NERDTreeToggleFocus()
     if &filetype ==# 'nerdtree'
@@ -54,7 +60,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 " highlight matches when searching
 set hlsearch
 " enable traversing carriage returns
@@ -70,8 +76,6 @@ set smarttab
 "set number of spaces per tab
 set softtabstop=4
 set tabstop=4
-" enable smart indent
-"set smartindent
 "set number of auto-indent spaces
 set shiftwidth=4
 set shiftround
@@ -96,12 +100,10 @@ command DiffUnsaved execute 'w !git diff --no-index % -'
 " VISUAL CONFIGURATION
 
 " Airline configuration
-" let g:airline#extensions#tabline#enabled = 1
 " set statusbar theme
 let g:airline_theme='base16_tomorrow'
 
 " set colour support
-"set t_Co=256
 colorscheme iceberg
 
 " define a function to toggle the sign column
@@ -116,12 +118,10 @@ endfunction
 map <C-s> :call ToggleSignColumn()<CR>
 
 " vim-go CONFIGURATION
-" auto-lint on save
-" let g:go_metalinter_autosave = 1
 " show type info in the status line
 let g:go_auto_type_info = 1
 " decrease status line update time (default 800ms)
-set updatetime=100
+set updatetime=300
 " enable syntax highlighting
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -129,3 +129,5 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
+
+set encoding=utf-8
