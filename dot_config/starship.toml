@@ -10,7 +10,7 @@ $kubernetes\
 [](bg:#8fbcbb fg:#88c0d0)\
 $git_branch\
 [](bg:#d9dee9 fg:#8fbcbb)\
-$git_status$git_state\
+$git_status${custom.worktrees}$git_state\
 [](fg:#d9dee9)\
 $character"""
 
@@ -53,3 +53,10 @@ disabled = true
 
 [docker_context]
 disabled = true
+
+[custom.worktrees]
+command = "@git-worktree-count"
+when = "git rev-parse --is-inside-work-tree 2>/dev/null && git worktree list 2>/dev/null | awk 'NR>1'"
+symbol = "⑂ "
+style = "fg:#2e3440 bg:#d9dee9"
+description = "Number of git worktrees"
