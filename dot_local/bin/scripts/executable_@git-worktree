@@ -20,14 +20,23 @@ worktree_path() {
 
 pick_action() {
     printf '%s\n' "cd" "new-branch" "clone-pr" "remove" "list" \
-        | fzf --prompt="worktree action > " --height=~10 --layout=reverse
+        | fzf --prompt="select action > " \
+        --height=~10 --layout=reverse-list \
+        --highlight-line --cycle
 }
 
 pick_worktree() {
     local prompt=${1:-"worktree > "}
-    git worktree list --porcelain \
-        | awk '/^worktree/ { path=$2 } /^branch/ { sub("refs/heads/","", $2); printf "%-30s %s\n", $2, path }' \
-        | fzf --prompt="${prompt}" --height=~15 --layout=reverse \
+    local exclude=${2:-}
+    local list
+    list=$(git worktree list --porcelain \
+        | awk '/^worktree/ { path=$2 } /^branch/ { sub("refs/heads/","", $2); printf "%-30s %s\n", $2, path }')
+    if [[ -n $exclude ]]; then
+        list=$(grep -Ev "^(${exclude})[[:space:]]" <<< "$list")
+    fi
+    echo "$list" \
+        | fzf --prompt="${prompt}" --height=~15 --layout=reverse-list \
+        --highlight-line --cycle \
         | awk '{ print $2 }'
 }
 
@@ -48,10 +57,19 @@ cmd_add() {
     echo "[INFO] Worktree available at: ${path} (copied to clipboard)"
 }
 
+pick_pr() {
+    gh pr list --json number,title,author,headRefName \
+        --jq '.[] | "#\(.number)\t\(.title)\t(\(.author.login))\t\(.headRefName)"' \
+        | column -t -s $'\t' \
+        | fzf --prompt="select PR > " --height=~15 --layout=reverse-list \
+            --highlight-line --cycle \
+        | awk '{ sub(/^#/, "", $1); print $1 }'
+}
+
 cmd_add_pr() {
     local pr=${1:-}
     if [[ -z $pr ]]; then
-        read -rp "PR number: " pr
+        pr=$(pick_pr)
         [[ -z $pr ]] && { echo "Aborted."; exit 1; }
     fi
     local remote=${2:-origin}
@@ -72,7 +90,7 @@ cmd_list() {
 cmd_remove() {
     local path=${1:-}
     if [[ -z $path ]]; then
-        path=$(pick_worktree "remove worktree > ")
+        path=$(pick_worktree "remove worktree > " "main|master")
         [[ -z $path ]] && { echo "Aborted."; exit 1; }
     fi
     git worktree remove "$path"
