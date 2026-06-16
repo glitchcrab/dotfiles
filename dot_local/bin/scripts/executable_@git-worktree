@@ -19,7 +19,7 @@ worktree_path() {
 }
 
 pick_action() {
-    printf '%s\n' "cd" "new-branch" "clone-pr" "remove" "list" \
+    printf '%s\n' "cd" "new-branch" "clone-pr" "remove" "list" "refresh-branches" \
         | fzf --prompt="select action > " \
         --height=~10 --layout=reverse-list \
         --highlight-line --cycle
@@ -97,6 +97,37 @@ cmd_remove() {
     echo "[INFO] Removed worktree at: ${path}"
 }
 
+cmd_refresh_branches() {
+    local current_branch
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    if [[ "$current_branch" != "main" && "$current_branch" != "master" ]]; then
+        echo "Error: must be on main or master (currently on ${current_branch})"
+        exit 1
+    fi
+
+    git remote prune origin
+
+    local worktree_branches
+    worktree_branches=$(git worktree list --porcelain \
+        | awk '/^branch/ { sub("refs/heads/", "", $2); print $2 }')
+
+    local local_branches
+    local_branches=$(git branch --format='%(refname:short)' \
+        | grep -Ev '^(main|master)$')
+
+    if [[ -n $local_branches ]]; then
+        while IFS= read -r branch; do
+            if ! grep -qx "$branch" <<< "$worktree_branches"; then
+                git branch -D "$branch" \
+                    && echo "[INFO] Deleted branch: ${branch}"
+            fi
+        done <<< "$local_branches"
+    fi
+
+    git fetch
+    echo "[INFO] Done."
+}
+
 cmd_cd() {
     local path=${1:-}
     if [[ -z $path ]]; then
@@ -119,11 +150,12 @@ else
 fi
 
 case $action in
-    new-branch)     cmd_add "$@" ;;
-    clone-pr)  cmd_add_pr "$@" ;;
-    list)    cmd_list ;;
-    remove)  cmd_remove "$@" ;;
-    cd)      cmd_cd "$@" ;;
+    new-branch)        cmd_add "$@" ;;
+    clone-pr)          cmd_add_pr "$@" ;;
+    list)              cmd_list ;;
+    remove)            cmd_remove "$@" ;;
+    cd)                cmd_cd "$@" ;;
+    refresh-branches)  cmd_refresh_branches ;;
     *)       echo "Unknown action: ${action}"; exit 1 ;;
 esac
 
