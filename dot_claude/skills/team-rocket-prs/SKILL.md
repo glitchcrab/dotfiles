@@ -29,15 +29,15 @@ Issue **all** calls in a single parallel batch (one tool call per repo, all in t
 
 Present the results grouped by repository. For each repo:
 
-- If it has open PRs, list them as bullet points showing only the PR title. Append `[draft]` for draft PRs.
+- If it has open PRs, list them as bullet points showing only the PR title and a link to the PR on GitHub. Append `[draft]` for draft PRs.
 - If it has no open PRs, write `— none`.
 
 Use this format:
 
 **<repo-name>**
-- PR title one
-- PR title two [draft]
+- PR title one - link
+- PR title two [draft] - link
 
 **<repo-name-2>** — none
 
-Do not include PR bodies, authors, or any other metadata — numbers and titles only.
+Do not include PR bodies, authors, or any other metadata — numbers, titles and links only.
