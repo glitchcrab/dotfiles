@@ -14,7 +14,7 @@ Use `mcp__github__get_file_contents` to fetch the file:
 - repo: `github`
 - path: `repositories/team-rocket.yaml`
 
-The response is a YAML list. Each item has a `name` field — that is the repository name. Extract all `name` values, but ignore the `mctl` repo.
+The response is a YAML list. Each item has a `name` field — that is the repository name. Extract all `name` values, but ignore the `mctl` and `mc-bootstrap` repos.
 
 ## Step 2 — Fetch open PRs in parallel
 
@@ -30,7 +30,7 @@ Issue **all** calls in a single parallel batch (one tool call per repo, all in t
 Present the results grouped by repository. For each repo:
 
 - If it has open PRs, list them as bullet points showing only the PR title and a link to the PR on GitHub. Append `[draft]` for draft PRs.
-- If it has no open PRs, write `— none`.
+- Do not list repositories with no open PRs.
 
 Use this format:
 
