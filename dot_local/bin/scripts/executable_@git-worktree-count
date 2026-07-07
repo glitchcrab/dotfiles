@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Count git worktrees for the current repo
+count=$(git worktree list | grep -vE '\[main\]|\[master\]' 2>/dev/null | wc -l)
+if [ "$count" -gt 0 ]; then
+  echo "$count"
+fi

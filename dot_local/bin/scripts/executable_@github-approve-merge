@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+if [ $# -gt 1 ]; then
+  echo '@github-approve-merge takes zero or one arguments' 1>&2
+  exit 1
+fi
+
+if [ $# -eq 1 ]; then
+  pr="$1"
+else
+  pr=$(gh pr list | fzf --prompt="Select PR: " | awk '{print $1}')
+  if [ -z "$pr" ]; then
+    echo 'No PR selected' 1>&2
+    exit 1
+  fi
+fi
+
+echo "CI checks for PR #$pr:"
+gh pr checks "$pr" || true
+
+not_passing=$(gh pr checks "$pr" --json bucket --jq '[.[] | select(.bucket != "pass" and .bucket != "skipping")] | length') || true
+if [ "$not_passing" -ne 0 ]; then
+  echo ""
+  echo "Warning: $not_passing check(s) are not passing." 1>&2
+fi
+
+echo ""
+read -r -p "Approve and merge PR #$pr? [y/N] " confirm
+if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+  echo "Aborted." 1>&2
+  exit 1
+fi
+
+gh pr review --approve "$pr"
+gh pr merge -ds "$pr"
