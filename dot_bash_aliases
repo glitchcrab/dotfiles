@@ -33,23 +33,34 @@ alias watch='watch '
 alias cat='bat -pP'
 
 # kubectl
+# force kubectl's bash completion to be loaded
+_completion_loader kubectl
 alias k='kubectl'
+complete -o default -F __start_kubectl k
 alias kex='kubectl explain'
+complete -o default -F __start_kubectl kex
 alias kg='kubectl get'
+complete -o default -F __start_kubectl kg
 alias kgpono='kubectl_get_po_on_no'
+complete -o default -F __start_kubectl kgpono
 alias kgl='kubectl get --show-labels'
 alias kgy='kubectl get -o yaml'
 alias ykg='kubectl get -o yaml'
 alias kgj='kubectl get -o json'
 alias jkg='kubectl get -o json'
 alias ked='kubectl edit'
+complete -o default -F __start_kubectl ked
 alias kdel='kubectl delete'
+complete -o default -F __start_kubectl kdel
 alias kdes='kubectl describe'
+complete -o default -F __start_kubectl kdes
 alias ka='kubectl apply'
 alias kexec='kubectl exec -it'
+complete -o default -F __start_kubectl kexec
 alias kxec='kubectl_exec_fzf'
 alias kgev="kubectl get events --sort-by='.metadata.creationTimestamp'"
 alias kl='kubectl logs'
+complete -o default -F __start_kubectl kl
 alias klf='kubectl logs -f'
 alias kexport='kubectl_export'
 alias kgall='kubectl_get_all'
