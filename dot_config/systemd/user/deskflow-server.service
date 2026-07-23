@@ -1,0 +1,15 @@
+[Unit]
+Description=Deskflow server
+# Require network before starting deskflow
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
+ExecStart=/usr/bin/deskflow-core server --new-instance -s %h/.config/Deskflow/Deskflow.conf
+Restart=always
+
+[Install]
+WantedBy=default.target
