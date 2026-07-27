@@ -49,6 +49,7 @@ bwrap \
     --tmpfs /tmp \
     --proc /proc \
     --dev /dev \
+    --bind /sys/fs/cgroup /sys/fs/cgroup \
     --share-net \
     --unshare-pid \
     --die-with-parent \
