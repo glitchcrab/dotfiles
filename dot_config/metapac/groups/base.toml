@@ -76,7 +76,7 @@ arch = [
   "unrar",
   "unzip",
   "vi",
-  "vim",
+  "gvim",
   "wget",
   "which",
   "whois",
