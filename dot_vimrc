@@ -83,6 +83,8 @@ set shiftround
 set expandtab
 "don't hide backticks and show full URL strings
 let g:indentLine_conceallevel=0
+"enable yanking to primary clipboard
+set clipboard=unnamedplus
 
 " stop indentline plugin hiding syntax characters
 " https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json
