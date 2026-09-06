@@ -1,6 +1,6 @@
 ---
 # deployment-specific settings
-image: "glitchcrab/ubuntu-debug:latest"
+image: "ghcr.io/a7d-corp/debug-container:ubuntu-latest"
 networkpolicy: true
 non-root: true
 pod-args: "24h"
