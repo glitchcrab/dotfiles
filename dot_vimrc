@@ -28,7 +28,7 @@ set backup
 if !isdirectory($HOME."/.vim/backups")
     silent! execute "!mkdir -p ~/.vim/backups"
 endif
-set backupdir=~/.vim/backups
+set backupdir=~/.vim/backups//
 
 " yaml config
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
@@ -60,6 +60,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
+" a colorscheme clears this group, so define it again after every change
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 " highlight matches when searching
 set hlsearch
@@ -82,8 +84,9 @@ set shiftround
 "always use spaces instead of tabs
 set expandtab
 "don't hide backticks and show full URL strings
-let g:indentLine_conceallevel=0
-"enable yanking to primary clipboard
+let g:vim_json_conceal=0
+let g:markdown_syntax_conceal=0
+"enable yanking to the system clipboard
 set clipboard=unnamedplus
 
 " stop indentline plugin hiding syntax characters
@@ -97,7 +100,7 @@ let g:terraform_align=1
 let g:terraform_fmt_on_save=1
 
 " add diff for unsaved changes
-command DiffUnsaved execute 'w !git diff --no-index % -'
+command! DiffUnsaved execute 'w !git diff --no-index % -'
 
 " VISUAL CONFIGURATION
 
@@ -106,18 +109,18 @@ command DiffUnsaved execute 'w !git diff --no-index % -'
 let g:airline_theme='base16_tomorrow'
 
 " set colour support
-colorscheme iceberg
+silent! colorscheme iceberg
 
 " define a function to toggle the sign column
 function! ToggleSignColumn()
-    if &signcolumn == "yes"
+    if &signcolumn ==# "yes"
         let &signcolumn="no"
     else
         let &signcolumn="yes"
     endif
 endfunction
 " set keybinding to call function
-map <C-s> :call ToggleSignColumn()<CR>
+nnoremap <C-s> :call ToggleSignColumn()<CR>
 
 " vim-go CONFIGURATION
 " show type info in the status line
