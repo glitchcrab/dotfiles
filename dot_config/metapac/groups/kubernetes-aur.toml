@@ -10,4 +10,5 @@ arch = [
   "dyff-bin",
   "pinniped-bin",
   "kubebuilder-bin",
+  "egctl-bin",
 ]
