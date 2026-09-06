@@ -1,0 +1,5 @@
+{{ if ne .chezmoi.hostname "cheyenne" }}
+.config/Deskflow/deskflow-server.conf
+.config/systemd/user/default.target.wants/deskflow-server.service
+.config/systemd/user/deskflow-server.service
+{{ end }}
