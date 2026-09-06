@@ -42,7 +42,7 @@ bwrap \
 {{- if eq .chezmoi.hostname "cheyenne" }}
     --ro-bind "${HOME}/.gitconfig-work" "${HOME}/.gitconfig-work" \
 {{- end }}
-    --ro-bind "${HOME}/.ssh/agent" "${HOME}/.ssh/agent" \
+    --ro-bind "${HOME}/.keychain" "${HOME}/.keychain" \
     --ro-bind "${HOME}/.ssh/known_hosts" "${HOME}/.ssh/known_hosts" \
     --ro-bind "${HOME}/.ssh/config" "${HOME}/.ssh/config" \
     --ro-bind "${HOME}/.ssh/includes.d" "${HOME}/.ssh/includes.d" \
