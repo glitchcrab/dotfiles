@@ -1,16 +1,66 @@
+# ── Identity ────────────────────────────────────────────────
 [user]
     email = glitchcrab-github@simonweald.com
     name = Simon Weald
     signingkey = FEAD0B2AFDD98808
+
+# ── Core / init ─────────────────────────────────────────────
+[init]
+    defaultBranch = main
+[core]
+    excludesfile = /home/shw/.gitignore_user
+    hooksPath = /home/shw/.git-hooks
+    attributesfile = /home/shw/.config/git/attributes
+
+# ── Commit / pull / push ────────────────────────────────────
 [commit]
     gpgsign = false
+[pull]
+    rebase = false
 [push]
     default = simple
     autoSetupRemote = true
-[http "https://gopkg.in"]
-    followRedirects = true
-[help]
-    autocorrect = 1
+
+# ── Diff / merge tooling (meld GUI + delta pager) ───────────
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+    tool = meld
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+
+# dyff driver for structured (YAML) diffs, opt-in via .gitattributes
+[diff "dyff"]
+    command = "dyff_between() { dyff --color on between --omit-header \"$2\" \"$5\"; }; dyff_between"
+
+# ── delta (pager + side-by-side) ────────────────────────────
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+[interactive]
+    diffFilter = delta --color-only --features=interactive --side-by-side
+[delta]
+    features = decorations
+    side-by-side = true
+    syntax-theme = Coldark-Dark # auto-switched by darkman
+[delta "interactive"]
+    keep-plus-minus-markers = false
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
+# ── Aliases ─────────────────────────────────────────────────
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     lgl = log --graph --oneline --decorate --all
@@ -22,63 +72,25 @@
     recent-branches = !git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short) %(objectname:short) %(committerdate:format:%F)' | column -t | sort -k3 | head -n 10
     sw = !git switch $(git branch -a --format '%(refname:short)' | sed 's~origin/~~' | sort | uniq | fzf)
     home = !gh home
+    # worktree helpers
     wt = !@git-worktree
     copr = !@git-add-pr-worktree
     wta = !@git-add-worktree
-    wtc = !@git-add-worktree
     wtl = worktree list
     wtr = worktree remove
-[diff]
-    tool = meld
-[difftool]
-    prompt = false
-[difftool "meld"]
-    cmd = meld "$LOCAL" "$REMOTE"
-[merge]
-    tool = meld
-[mergetool "meld"]
-    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
-[core]
-    excludesfile = /home/shw/.gitignore_user
-    hooksPath = /home/shw/.git-hooks
-    attributesfile = /home/shw/.config/git/attributes
-[pull]
-    rebase = false
+
+# ── Misc ────────────────────────────────────────────────────
+[help]
+    autocorrect = 1
 [hooks]
     gitleaks = false
-[init]
-    defaultBranch = main
-
-[pager]
-    diff = delta
-    log = delta
-    reflog = delta
-    show = delta
-
-[interactive]
-    diffFilter = delta --color-only --features=interactive
-
-[delta]
-    features = decorations
-    syntax-theme = GitHub # auto-switched by darkman
-
-[delta "interactive"]
-    keep-plus-minus-markers = false
-
-[delta "decorations"]
-    commit-decoration-style = blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number syntax
+[http "https://gopkg.in"]
+    followRedirects = true
 [credential "https://github.com"]
     helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
     helper = !/usr/bin/gh auth git-credential
 
+# ── Work overrides for ~/code/giantswarm/repos/ ─────────────
 [includeIf "gitdir:~/code/giantswarm/repos/"]
     path = ~/.gitconfig-work
-[diff "dyff"]
-	command = "dyff_between() { dyff --color on between --omit-header \"$2\" \"$5\"; }; dyff_between"
