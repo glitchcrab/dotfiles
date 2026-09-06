@@ -7,4 +7,5 @@ arch = [
     "wat-git",
     "paru-bin",
     "metapac-bin",
+    "tailcat-bin",
 ]
