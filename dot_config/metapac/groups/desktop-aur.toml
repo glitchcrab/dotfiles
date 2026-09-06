@@ -13,4 +13,5 @@ arch = [
     "clipit-git",
     "localsend-bin",
     "vial-appimage",
+    "betterbird-bin",
 ]
