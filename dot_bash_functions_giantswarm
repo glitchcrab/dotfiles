@@ -180,3 +180,41 @@ tshfzf() {
         tsh ls | fzf | awk '{print $1}' | cut -d'.' -f1 | xargs -o -I {} tsh ssh root@node={}
     fi
 }
+
+get_release_template() {
+  # Adjust these if your Release CRD uses different component names.
+  local flatcar_component="flatcar"
+  local kubernetes_component="kubernetes"
+  local tooling_component="os-tooling"
+  local flatcar_channel="stable"
+
+  local releases
+  mapfile -t releases < <(kubectl get releases -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+
+  if [[ ${#releases[@]} -eq 0 ]]; then
+    echo "Error: no releases found." >&2
+    return 1
+  fi
+
+  local selected
+  PS3="Select a release: "
+  select selected in "${releases[@]}"; do
+    [[ -n "$selected" ]] && break
+    echo "Invalid selection. Try again." >&2
+  done
+
+  local release_json
+  release_json=$(kubectl get release "$selected" -o json)
+
+  local flatcar_version kube_version tooling_version
+  flatcar_version=$(jq -r --arg name "$flatcar_component" '.spec.components[] | select(.name == $name) | .version' <<< "$release_json")
+  kube_version=$(jq -r --arg name "$kubernetes_component" '.spec.components[] | select(.name == $name) | .version' <<< "$release_json")
+  tooling_version=$(jq -r --arg name "$tooling_component" '.spec.components[] | select(.name == $name) | .version' <<< "$release_json")
+
+  if [[ -z "$flatcar_version" || -z "$kube_version" || -z "$tooling_version" ]]; then
+    echo "Error: could not extract one or more versions from release '$selected'." >&2
+    return 1
+  fi
+
+  echo "flatcar-${flatcar_channel}-${flatcar_version}-kube-${kube_version}-tooling-${tooling_version}-gs"
+}

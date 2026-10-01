@@ -230,3 +230,11 @@ pkg_file_diff() {
         tar xf $pkgFilePath -O ${file#/} | sudo delta $file -
     fi
 }
+
+b64decode() {
+    local input="${1:-}"
+    if [[ -z "$input" ]]; then
+        input=$(cat)   # read from stdin if no argument
+    fi
+    printf '%s' "$input" | base64 --decode
+}
