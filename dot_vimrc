@@ -19,7 +19,6 @@ Plug 'yggdroot/indentline'
 Plug 'airblade/vim-gitgutter'
 Plug 'nordtheme/vim', {'as': 'nordtheme'}
 Plug 'cocopon/iceberg.vim'
-Plug 'github/copilot.vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
