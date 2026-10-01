@@ -11,4 +11,5 @@ arch = [
   "pinniped-bin",
   "kubebuilder-bin",
   "egctl-bin",
+  "helm-docs",
 ]
