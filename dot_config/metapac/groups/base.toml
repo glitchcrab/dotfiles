@@ -96,4 +96,6 @@ arch = [
   "openssl-1.1",
   "chezmoi",
   "gptfdisk",
+  "zram-generator",
+  "earlyoom",
 ]
