@@ -24,3 +24,4 @@ repos:
   - a7d-corp/homelab-clusters-addons
   - a7d-corp/i3-config-generator-go
   - a7d-corp/simonweald.com
+  - a7d-corp/github-release-checker
