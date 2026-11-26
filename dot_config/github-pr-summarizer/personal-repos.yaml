@@ -1,0 +1,26 @@
+---
+repos:
+  - a7d-corp/ansible-ci-deploy
+  - a7d-corp/ansible-infrastructure-playbooks
+  - a7d-corp/sonar
+  - a7d-corp/dickingwithdocker.com
+  - a7d-corp/github-pr-summarizer
+  - a7d-corp/arch-aur-pkgbuilds
+  - a7d-corp/haproxy-dataplane-operator
+  - a7d-corp/apple-health-ingestor
+  - a7d-corp/ansible-core
+  - a7d-corp/ansible-role-packages
+  - a7d-corp/ansible-role-os-updates
+  - a7d-corp/ansible-role-server-hardening
+  - a7d-corp/debug-container
+  - a7d-corp/renovate-presets
+  - a7d-corp/caddy-cloudflare
+  - a7d-corp/homeassistant
+  - a7d-corp/pagerduty-oncall-notifier
+  - a7d-corp/exercise-tracker
+  - a7d-corp/caddy-docker-build
+  - a7d-corp/template-repo
+  - a7d-corp/homelab-clusters-fleet
+  - a7d-corp/homelab-clusters-addons
+  - a7d-corp/i3-config-generator-go
+  - a7d-corp/simonweald.com
